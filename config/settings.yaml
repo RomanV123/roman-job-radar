@@ -1,0 +1,152 @@
+# Domain configuration for scoring, locations, and role targeting.
+# Distinct from .env, which holds secrets/runtime toggles.
+
+employment_types:
+  include: [full_time, internship]
+  exclude_unless_enabled: [senior, management, contract, commission_only, unpaid_internship, part_time]
+  # Add a category here (e.g. "contract") to stop rejecting it in eligibility
+  # filtering — edit and save, no code changes needed.
+  manually_enabled_categories: []
+
+seniority_exclude_keywords:
+  - Senior
+  - Staff
+  - Principal
+  - Lead
+  - Director
+  - Manager
+
+seniority_include_keywords:
+  - Intern
+  - Graduate Intern
+  - New Graduate
+  - Entry Level
+  - Junior
+  - Associate
+  - Analyst I
+  - Engineer I
+  - Early Career
+
+max_required_experience_years: 3
+
+locations:
+  california_priority:
+    - San Francisco Bay Area
+    - San Francisco
+    - San Jose
+    - Oakland
+    - South San Francisco
+    - Foster City
+    - San Mateo
+    - Palo Alto
+    - Sunnyvale
+    - Santa Clara
+    - Pleasanton
+    - Sacramento
+    - Davis
+    - Vacaville
+    - Folsom
+    - Roseville
+    - West Sacramento
+    - Los Angeles
+    - San Diego
+  remote_us: true
+  other_us: true
+
+target_role_categories:
+  cybersecurity:
+    - Cybersecurity Analyst
+    - Security Analyst
+    - Information Security Analyst
+    - Cybersecurity Engineer I
+    - Junior Security Engineer
+    - Security Operations Analyst
+    - SOC Analyst
+    - SIEM Analyst
+    - Splunk Analyst
+    - Incident Response Analyst
+    - Vulnerability Management Analyst
+    - Detection and Response Analyst
+    - Security Automation Engineer
+    - Endpoint Security Analyst
+  network_infrastructure:
+    - Network Security Engineer
+    - Firewall Engineer
+    - Network Engineer
+    - Infrastructure Engineer
+    - Systems Engineer
+    - Systems Administrator
+    - Infrastructure Security Analyst
+    - Cloud Security Analyst
+    - Cloud Infrastructure Engineer
+    - IAM Analyst
+    - IT Operations Analyst
+    - Network Operations Analyst
+  ot_biotech:
+    - OT Cybersecurity Analyst
+    - OT Security Engineer
+    - Industrial Cybersecurity Analyst
+    - IT/OT Infrastructure Engineer
+    - Operational Technology Engineer
+    - Manufacturing Systems Analyst
+    - Manufacturing IT Analyst
+    - Digital Manufacturing Analyst
+    - Automation Systems Analyst
+    - SCADA Systems Analyst
+    - Control Systems Security Analyst
+    - OT Asset Management Analyst
+    - GxP Systems Analyst
+    - Computer Systems Validation Analyst
+  data_technical:
+    - Cybersecurity Data Analyst
+    - Security Data Analyst
+    - Junior Data Engineer
+    - Python Automation Engineer
+    - Infrastructure Data Analyst
+    - Technical Data Analyst
+    - Business Intelligence Analyst
+    - Technology Analyst
+  risk_compliance:
+    - Technology Risk Analyst
+    - IT Risk Analyst
+    - Cybersecurity Risk Analyst
+    - GRC Analyst
+    - Information Security Compliance Analyst
+    - Security Assurance Analyst
+    - Technology Controls Analyst
+  product_management:
+    - Associate Product Manager
+    - Product Manager I
+    - Junior Product Manager
+    - Technical Product Manager
+    - Security Product Manager
+    - Product Analyst
+    - Product Operations Analyst
+
+scoring_weights:
+  skills: 0.30
+  experience: 0.20
+  title: 0.15
+  semantic: 0.10
+  education: 0.10
+  location: 0.10
+  freshness: 0.05
+
+score_bands:
+  exceptional: [88, 100]
+  strong: [80, 87]
+  good: [70, 79]
+  possible: [60, 69]
+  hidden_below: 60
+
+skill_combinations_bonus:
+  - [Splunk, SIEM, "network traffic"]
+  - [Palo Alto NGFW, Panorama, "firewall policies"]
+  - [Python, "security automation"]
+  - [Python, ETL, SQL]
+  - [AWS, Terraform, "cloud security"]
+  - [Wireshark, Nmap, "vulnerability analysis"]
+  - [Active Directory, "systems administration"]
+  - [Operational Technology, PLC, SCADA, DCS]
+  - [Operational Technology, "manufacturing systems"]
+  - [Network Security, "incident investigation"]

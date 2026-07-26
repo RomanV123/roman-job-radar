@@ -1,0 +1,156 @@
+# Normalized skill dictionary. Each top-level key is the canonical skill name.
+# "aliases" are alternate spellings/phrasings seen in resumes or job descriptions
+# that should be folded into the canonical name during matching.
+# "category" groups skills for scoring combinations (see config/settings.yaml).
+#
+# This is not "every word in the resume" — only skills explicitly vetted here
+# are used for matching. Add new skills deliberately, don't auto-harvest nouns.
+
+Python:
+  category: core
+  aliases: [Python3, "Python 3"]
+SQL:
+  category: core
+  aliases: [MySQL, PostgreSQL, T-SQL, SQLite]
+Pandas:
+  category: core
+  aliases: []
+ETL:
+  category: core
+  aliases: ["Extract Transform Load", "data pipelines"]
+PowerShell:
+  category: core
+  aliases: []
+Bash:
+  category: core
+  aliases: [shell scripting]
+Splunk:
+  category: core
+  aliases: ["Splunk Power User"]
+SIEM:
+  category: core
+  aliases: ["Security Information and Event Management"]
+Palo Alto NGFW:
+  category: core
+  aliases: ["Palo Alto Networks", "Palo Alto", "Palo Alto Firewalls"]
+Panorama:
+  category: core
+  aliases: ["Panorama NGFW Management"]
+Firewall Security Policies:
+  category: core
+  aliases: ["firewall policies", "firewall management"]
+NAT Policies:
+  category: core
+  aliases: ["NAT policy", "Network Address Translation"]
+Zero Trust:
+  category: core
+  aliases: ["Zero Trust segmentation", "ZTNA"]
+TCP/IP:
+  category: core
+  aliases: ["TCP/UDP", "networking fundamentals"]
+DNS:
+  category: core
+  aliases: []
+DHCP:
+  category: core
+  aliases: []
+Network Security:
+  category: core
+  aliases: []
+Wireshark:
+  category: core
+  aliases: ["packet capture", "deep-packet inspection"]
+Nmap:
+  category: core
+  aliases: ["network scanning"]
+Windows:
+  category: core
+  aliases: ["Microsoft Windows", "Windows Server"]
+Linux:
+  category: core
+  aliases: [Unix]
+Active Directory:
+  category: core
+  aliases: [AD, "Active Directory Domain Services"]
+AWS:
+  category: core
+  aliases: ["Amazon Web Services"]
+Terraform:
+  category: core
+  aliases: ["infrastructure as code", IaC]
+VMware ESXi:
+  category: core
+  aliases: [ESXi, VMware]
+Microsoft Hyper-V:
+  category: core
+  aliases: [Hyper-V]
+Data Validation:
+  category: core
+  aliases: []
+Data Analysis:
+  category: core
+  aliases: ["data analytics"]
+API Integrations:
+  category: core
+  aliases: [API, APIs, "REST API"]
+Technical Documentation:
+  category: core
+  aliases: [documentation]
+Incident Investigation:
+  category: core
+  aliases: ["incident response", "incident handling"]
+Vulnerability Identification:
+  category: core
+  aliases: ["vulnerability management", "vulnerability assessment", "vulnerability scanning"]
+
+# --- OT / manufacturing ---
+Operational Technology:
+  category: ot
+  aliases: [OT]
+PLC:
+  category: ot
+  aliases: ["Programmable Logic Controller"]
+SCADA:
+  category: ot
+  aliases: []
+DCS:
+  category: ot
+  aliases: ["Distributed Control System"]
+HMI:
+  category: ot
+  aliases: ["Human Machine Interface"]
+OPC:
+  category: ot
+  aliases: ["OPC-UA"]
+Batch Management:
+  category: ot
+  aliases: []
+Alarm Management:
+  category: ot
+  aliases: []
+OT Asset Lifecycle Management:
+  category: ot
+  aliases: ["OT asset management"]
+Industrial Automation:
+  category: ot
+  aliases: []
+Manufacturing Systems:
+  category: ot
+  aliases: []
+
+# --- Certifications (matched separately, not swapped into skill text) ---
+Panorama NGFW Management (Cert):
+  category: certification
+  aliases: []
+NGFW Firewall Troubleshooting (Cert):
+  category: certification
+  aliases: []
+Splunk Power User (Cert):
+  category: certification
+  aliases: []
+Google Cybersecurity Certificate:
+  category: certification
+  aliases: []
+Microsoft Azure AI (Cert):
+  category: certification
+  aliases: []

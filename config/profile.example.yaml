@@ -1,0 +1,212 @@
+# Editable candidate profile. This is the source of truth for matching —
+# NOT the raw resume text (see data/resume_raw.txt for that).
+# Edit this file directly to correct skills, dates, titles, locations, etc.
+#
+# This is the TEMPLATE tracked in git. Copy it to config/profile.yaml and
+# fill in your real contact details there — config/profile.yaml is
+# gitignored so your personal info never gets committed.
+
+candidate:
+  name: Your Name
+  email: you@example.com
+  phone: "555-555-5555"
+  linkedin: "linkedin.com/in/your-handle"
+  github: "github.com/your-handle"
+
+education:
+  - institution: Georgia Institute of Technology
+    degree: Master of Science in Cybersecurity
+    modality: Online
+    start_date: 2026-08
+    end_date: 2028-05
+    status: expected
+  - institution: University of California, Davis
+    degree: Bachelor of Science in Statistical Computation
+    minor: Computer Science
+    modality: On-campus
+    start_date: null
+    end_date: 2026-06
+    status: expected
+
+experience:
+  - company: Lonza
+    location: Vacaville, CA
+    title: Operational Technology Infrastructure Intern
+    start_date: 2026-05
+    end_date: present
+    highlights:
+      - "Engineered Python ETL scripts to validate OT asset data and infrastructure sources into a cybersecurity dashboard"
+      - "Developed industrial automation training covering PLC, SCADA, DCS, HMI, OPC, batch and alarm management"
+      - "Standardized operational performance records from Excel within Fabriq, enhancing KPI tracking and reporting"
+    skills_demonstrated: [Python, ETL, Operational Technology, PLC, SCADA, DCS, HMI, OPC, Batch Management, Alarm Management, Data Validation]
+  - company: Intel
+    location: Folsom, CA
+    title: Information Security Network Engineer
+    start_date: 2025-05
+    end_date: 2025-12
+    highlights:
+      - "Deployed 75+ Panorama firewall and NAT policies, reducing attack surface by 30% through Zero Trust segmentation"
+      - "Improved threat detection accuracy by 15% using SIEM Splunk to analyze anomalous traffic and refine detection logic"
+      - "Migrated VMware ESXi virtual machines to Microsoft Hyper-V by exporting VM configurations, resolving compatibility issues, and ensuring stable post-migration performance"
+    skills_demonstrated: [Panorama, Palo Alto NGFW, NAT Policies, Zero Trust, SIEM, Splunk, VMware ESXi, Microsoft Hyper-V, Network Security]
+  - company: California Air Resources Board
+    location: Vacaville, CA
+    title: Information Technology Student Assistant
+    start_date: 2023-09
+    end_date: 2026-06
+    highlights:
+      - "Performed deep-packet inspection and network security analysis with Wireshark to investigate traffic anomalies"
+      - "Identified Windows and Linux vulnerabilities using Nmap, log analysis, endpoint checks, recording remediation steps"
+      - "Built Python scripts to clean, reformat, validate, and standardize Excel datasets for analysis and reporting"
+    skills_demonstrated: [Wireshark, Nmap, Network Security, Windows, Linux, Vulnerability Identification, Python, Data Validation]
+  - company: UC Davis
+    location: Davis, CA
+    title: Help Desk Technician
+    start_date: 2025-03
+    end_date: 2026-06
+    highlights:
+      - "Resolved software-related vulnerabilities and security threats across Windows, Linux, and macOS environments"
+      - "Managed account access, password configuration, software installs, and workstation setup across campus systems"
+      - "Diagnosed and resolved local network issues, including DNS/DHCP configuration to maintain consistent uptime"
+    skills_demonstrated: [Windows, Linux, Active Directory, DNS, DHCP, Network Security]
+
+projects:
+  - name: Cloud Security Infrastructure Lab
+    tech: [AWS, Terraform]
+    date_range: "2025-12 to 2026-01"
+    description: "Built an AWS environment deploying VPCs, public/private subnets, and security groups to test network segmentation"
+  - name: AI Brute Force Password Hacker
+    tech: [Python, TensorFlow, Keras]
+    date_range: "2024-12 to 2025-02"
+    description: "Trained an LSTM-based neural network analyzing common password patterns to simulate brute-force attacks"
+  - name: SQL Injection Detection & Logging Predictor
+    tech: [Python, Pandas, SQLite, TensorFlow, Flask]
+    date_range: "2025-01 to 2025-03"
+    description: "Created an AI-driven Flask dashboard using a TensorFlow LSTM to detect SQL injection attacks with 95% accuracy"
+  - name: Virtualized Active Directory Lab
+    tech: [Active Directory, VMware]
+    date_range: "2026-05 to 2026-07"
+    description: "Configured a physical server, deployed virtual machines, and implemented an Active Directory domain environment"
+
+skills:
+  primary:
+    - Python
+    - SQL
+    - Pandas
+    - ETL
+    - PowerShell
+    - Bash
+    - Splunk
+    - SIEM
+    - Palo Alto NGFW
+    - Panorama
+    - Firewall Security Policies
+    - NAT Policies
+    - Zero Trust
+    - TCP/IP
+    - DNS
+    - DHCP
+    - Network Security
+    - Wireshark
+    - Nmap
+    - Windows
+    - Linux
+    - Active Directory
+    - AWS
+    - Terraform
+    - VMware ESXi
+    - Microsoft Hyper-V
+    - Data Validation
+    - Data Analysis
+    - API Integrations
+    - Technical Documentation
+    - Incident Investigation
+    - Vulnerability Identification
+  ot_manufacturing:
+    - Operational Technology
+    - PLC
+    - SCADA
+    - DCS
+    - HMI
+    - OPC
+    - Batch Management
+    - Alarm Management
+    - OT Asset Lifecycle Management
+    - Industrial Automation
+    - Manufacturing Systems
+
+certifications:
+  - name: Panorama NGFW Management
+    issuer: Palo Alto Networks
+  - name: NGFW Firewall Troubleshooting
+    issuer: Palo Alto Networks
+  - name: Splunk Power User
+    issuer: Splunk
+  - name: Google Cybersecurity Certificate
+    issuer: Google
+  - name: Microsoft Azure AI
+    issuer: Microsoft
+
+target_role_categories:
+  - cybersecurity
+  - network_infrastructure
+  - ot_biotech
+  - data_technical
+  - risk_compliance
+  - product_management
+
+target_titles_freeform:
+  - Cybersecurity Analyst
+  - Security Analyst
+  - Information Security Analyst
+  - Cybersecurity Engineer I
+  - Junior Security Engineer
+  - Security Operations Analyst
+  - SOC Analyst
+  - SIEM Analyst
+  - Splunk Analyst
+  - Incident Response Analyst
+  - Vulnerability Management Analyst
+  - Network Security Engineer
+  - Firewall Engineer
+  - Network Engineer
+  - Infrastructure Engineer
+  - Systems Administrator
+  - Cloud Security Analyst
+  - IAM Analyst
+  - OT Cybersecurity Analyst
+  - OT Security Engineer
+  - Industrial Cybersecurity Analyst
+  - IT/OT Infrastructure Engineer
+  - Manufacturing Systems Analyst
+  - Junior Data Engineer
+  - Python Automation Engineer
+  - GRC Analyst
+  - IT Risk Analyst
+  - Associate Product Manager
+  - Product Manager I
+  - Junior Product Manager
+  - Technical Product Manager
+  - Security Product Manager
+  - Product Analyst
+  - Product Operations Analyst
+
+preferred_locations:
+  california_priority: true
+  remote_us: true
+  other_us: true
+  excluded_countries_outside_us: true
+
+employment_types:
+  - full_time
+  - internship
+
+eligibility:
+  work_authorization: "U.S. citizen — no sponsorship required"
+  clearance_held: none
+  citizenship_restricted_roles_eligible: true # U.S. citizen; eligible for citizenship-restricted roles (clearance itself may still need to be obtained)
+  graduate_student_status: true # currently pursuing MS at Georgia Tech; also finishing BS at UC Davis
+  max_years_experience_have: 2 # approx years of relevant internship/part-time experience, edit as needed
+
+resume_version: "RomanVasilyevResumeIntern2"
+last_manually_reviewed: null # set this date after you review/correct this file

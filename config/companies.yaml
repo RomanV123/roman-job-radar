@@ -1,0 +1,1824 @@
+# Seed company registry.
+#
+# Schema for each entry:
+#   - name: Display name
+#     industry: free-text category (biotech, cybersecurity, ot, energy, semiconductor, technology, government, ...)
+#     ats_type: greenhouse | lever | ashby | workday | government | custom
+#     board_identifier: the token used in the ATS's public API URL
+#       (for workday, this is the tenant — see custom_config below)
+#     careers_url: official careers page (used for government/custom sources)
+#     priority: 1 (poll hourly) | 2 (poll every 3h) | 3 (discovery queue, not yet implemented)
+#     active: true | false
+#     custom_config: optional dict, used by the workday/government/custom collectors
+#       (see src/collectors/workday.py, government.py, and custom_page.py)
+#
+# 157 entries below were verified LIVE against real APIs (not guessed): 139
+# against the public Greenhouse/Lever/Ashby APIs, and 18 against Workday's
+# internal CXS search endpoint (see src/collectors/workday.py for why that
+# one needs a tenant + wd_host + site rather than just a board token).
+# Priority 1 = California biotech, cybersecurity, OT/industrial,
+# semiconductor employers most relevant to Roman's background. Priority 2 =
+# broader national tech/cloud employers, polled less frequently.
+#
+# How to add a company yourself:
+#   Greenhouse: https://boards-api.greenhouse.io/v1/boards/<guess>/jobs
+#   Lever:      https://api.lever.co/v0/postings/<guess>?mode=json
+#   Ashby:      https://api.ashbyhq.com/posting-api/job-board/<guess>
+#   Workday:    POST https://<tenant>.wd<1-5>.myworkdayjobs.com/wday/cxs/<tenant>/<site>/jobs
+#               with body {"appliedFacets":{},"limit":1,"offset":0,"searchText":""} —
+#               tenant/site aren't guessable from the company name alone; check
+#               the actual careers page's network requests for the real values.
+# A 200 response with real job data confirms the identifiers.
+# See README.md for a fuller walkthrough (added in Phase 14).
+
+companies:
+  - name: "10x Genomics"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: 10xgenomics
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "1Password"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: 1password
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "AbCellera"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: abcellera
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Abnormal AI"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: abnormalsecurity
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Affirm"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: affirm
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Airbnb"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: airbnb
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Alector"
+    industry: biotech
+    ats_type: lever
+    board_identifier: alector
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Alnylam Pharmaceuticals"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: alnylampharmaceuticals
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Anduril"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: andurilindustries
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Anthropic"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: anthropic
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Arcellx"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: arcellx
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Arcturus Therapeutics"
+    industry: biotech
+    ats_type: ashby
+    board_identifier: arcturus
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "ArsenalBio"
+    industry: biotech
+    ats_type: lever
+    board_identifier: arsenalbio
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Asana"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: asana
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Astera Labs"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: asteralabs
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Atlassian"
+    industry: technology
+    ats_type: lever
+    board_identifier: atlassian
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Augury"
+    industry: ot
+    ats_type: greenhouse
+    board_identifier: augury
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Axonius"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: axonius
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Beam Therapeutics"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: beamtherapeutics
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Benchling"
+    industry: biotech
+    ats_type: ashby
+    board_identifier: benchling
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "BeyondTrust"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: beyondtrust
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "BigID"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: bigid
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "BillionToOne"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: billiontoone
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Block"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: block
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Blueprint Medicines"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: blueprintmedicines
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Boundless Bio"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: boundlessbio
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Brex"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: brex
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "BridgeBio Pharma"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: bridgebio
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Bugcrowd"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: bugcrowd
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Calico Life Sciences"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: calicolabs
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Caribou Biosciences"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: caribou
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Cato Networks"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: catonetworks
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Cellares"
+    industry: biotech
+    ats_type: lever
+    board_identifier: cellares
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Celonis"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: celonis
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cerebras Systems"
+    industry: technology
+    ats_type: ashby
+    board_identifier: cerebras
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Chai Discovery"
+    industry: biotech
+    ats_type: ashby
+    board_identifier: chaidiscovery
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Chainguard"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: chainguard
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Chime"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: chime
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cloudflare"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: cloudflare
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Coalfire"
+    industry: cybersecurity
+    ats_type: lever
+    board_identifier: coalfire
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Cockroach Labs"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: cockroachlabs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cognite"
+    industry: ot
+    ats_type: greenhouse
+    board_identifier: cognite
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Cohere"
+    industry: technology
+    ats_type: ashby
+    board_identifier: cohere
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Coinbase"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: coinbase
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Confluent"
+    industry: technology
+    ats_type: ashby
+    board_identifier: confluent
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Databricks"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: databricks
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Datadog"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: datadog
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Dataiku"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: dataiku
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Deel"
+    industry: technology
+    ats_type: ashby
+    board_identifier: deel
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Deepwatch"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: deepwatchinc
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Docker"
+    industry: technology
+    ats_type: ashby
+    board_identifier: docker
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "DoorDash"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: doordashusa
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Dragos"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: dragos
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Drata"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: drata
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Dropbox"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: dropbox
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Dynavax Technologies"
+    industry: biotech
+    ats_type: lever
+    board_identifier: dynavax
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Elastic"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: elastic
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Epic Bio"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: epicbio
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Erasca"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: erasca
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Expel"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: expel
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Fastly"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: fastly
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Figma"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: figma
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Form Energy"
+    industry: energy
+    ats_type: ashby
+    board_identifier: formenergy
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Freenome"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: freenome
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Ginkgo Bioworks"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: ginkgobioworks
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "GitLab"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: gitlab
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Grafana Labs"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: grafanalabs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "GuidePoint Security"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: guidepointsecurity
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "HackerOne"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: hackerone
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Helion Energy"
+    industry: energy
+    ats_type: ashby
+    board_identifier: helion
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Horizon3.ai"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: horizon3ai
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Huntress"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: huntress
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Illumio"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: illumio
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Inductive Automation"
+    industry: ot
+    ats_type: lever
+    board_identifier: inductiveautomation
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Instacart"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: instacart
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Kodiak Sciences"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: kodiak
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "MongoDB"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: mongodb
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Natera"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: natera
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Neo4j"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: neo4j
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Netlify"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: netlify
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Netskope"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: netskope
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Neumora Therapeutics"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: neumora
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "New Relic"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: newrelic
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "NewLimit"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: newlimit
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Nkarta"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: nkarta
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Notion"
+    industry: technology
+    ats_type: ashby
+    board_identifier: notion
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Nozomi Networks"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: nozominetworks
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Nurix Therapeutics"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: nurix
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "OPSWAT"
+    industry: ot
+    ats_type: greenhouse
+    board_identifier: opswat
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Okta"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: okta
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "OpenAI"
+    industry: technology
+    ats_type: ashby
+    board_identifier: openai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Orca Security"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: orcasecurity
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "PagerDuty"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: pagerduty
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Palantir"
+    industry: technology
+    ats_type: lever
+    board_identifier: palantir
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Panther Labs"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: pantherlabs
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Perplexity"
+    industry: technology
+    ats_type: ashby
+    board_identifier: perplexity
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Personalis"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: personalisinc
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Plaid"
+    industry: technology
+    ats_type: lever
+    board_identifier: plaid
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Pliant Therapeutics"
+    industry: biotech
+    ats_type: ashby
+    board_identifier: pliant
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Protagonist Therapeutics"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: protagonist
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Recorded Future"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: recordedfuture
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Reddit"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: reddit
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Redis"
+    industry: technology
+    ats_type: ashby
+    board_identifier: redis
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Redwood Materials"
+    industry: energy
+    ats_type: greenhouse
+    board_identifier: redwoodmaterials
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Revolution Medicines"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: revolutionmedicines
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Robinhood"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: robinhood
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Rubrik"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: rubrik
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Salt Security"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: saltsecurity
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "SambaNova Systems"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: sambanovasystems
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Samsara"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: samsara
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Scale AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: scaleai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "SecurityScorecard"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: securityscorecard
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Semgrep"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: semgrep
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Shield AI"
+    industry: technology
+    ats_type: lever
+    board_identifier: shieldai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Snowflake"
+    industry: technology
+    ats_type: ashby
+    board_identifier: snowflake
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Snyk"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: snyk
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "SoFi"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: sofi
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sophos"
+    industry: cybersecurity
+    ats_type: lever
+    board_identifier: sophos
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Squarespace"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: squarespace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Stripe"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: stripe
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sumo Logic"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: sumologic
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sysdig"
+    industry: cybersecurity
+    ats_type: lever
+    board_identifier: sysdig
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Tailscale"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: tailscale
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Tines"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: tines
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Together AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: togetherai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Tulip Interfaces"
+    industry: ot
+    ats_type: greenhouse
+    board_identifier: tulip
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Twilio"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: twilio
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Twist Bioscience"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: twistbioscience
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "UiPath"
+    industry: technology
+    ats_type: ashby
+    board_identifier: uipath
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Ultragenyx"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: ultragenyxpharmaceutical
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Vanta"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: vanta
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Vaxcyte"
+    industry: biotech
+    ats_type: greenhouse
+    board_identifier: vaxcyte
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Veeva Systems"
+    industry: biotech
+    ats_type: lever
+    board_identifier: veeva
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Vercel"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: vercel
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Verkada"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: verkada
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Waterfall Security Solutions"
+    industry: cybersecurity
+    ats_type: lever
+    board_identifier: waterfall
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Wiz"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: wiz
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "Zscaler"
+    industry: cybersecurity
+    ats_type: greenhouse
+    board_identifier: zscaler
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "insitro"
+    industry: biotech
+    ats_type: ashby
+    board_identifier: insitro
+    careers_url: null
+    priority: 1
+    active: true
+
+# --- S&P 500 expansion (round 1: Greenhouse/Lever/Ashby) ---
+#
+# 14 companies below were confirmed by fetching the full, current S&P 500
+# constituent list (from Wikipedia's live data table, 502 entries) and
+# testing each against Greenhouse/Lever/Ashby. ~23 other candidate matches
+# were REJECTED after inspecting actual job content — generic single-word
+# slug guesses (e.g. "general", "eli", "align", "capital", "us") collided
+# with unrelated small companies that happen to hold those exact slugs, not
+# the intended S&P 500 company. Each entry below was confirmed by checking
+# real job titles/locations/company fields against the actual company
+# (e.g. Verisign's Reston, VA HQ; EQT's Canonsburg, PA gas-industry roles;
+# Gen Digital's MoneyLion-branded role, matching their real 2025
+# acquisition). Workday discovery for the remaining ~460 S&P 500 companies
+# not on Greenhouse/Lever/Ashby is a separate, much larger effort — see
+# conversation history for status.
+  - name: "AppLovin"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: applovin
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Applied Materials"
+    industry: semiconductor
+    ats_type: ashby
+    board_identifier: applied
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Axon Enterprise"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: axon
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Carvana"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: carvana
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "CoStar Group"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: costar
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "D. R. Horton"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: drhorton
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "EQT Corporation"
+    industry: energy
+    ats_type: greenhouse
+    board_identifier: eqtcorporation
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Flex Ltd."
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: flex
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Gen Digital"
+    industry: cybersecurity
+    ats_type: ashby
+    board_identifier: gen-digital
+    careers_url: null
+    priority: 1
+    active: true
+  - name: "GoDaddy"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: godaddy
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Hasbro"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: hasbro
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "MetLife"
+    industry: technology
+    ats_type: lever
+    board_identifier: metlife
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "The Trade Desk"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: thetradedesk
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Verisign"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: verisign
+    careers_url: null
+    priority: 2
+    active: true
+
+# --- Workday ---
+#
+# These 18 entries were verified LIVE against the real Workday CXS search
+# endpoint (POST .../wday/cxs/{tenant}/{site}/jobs) — see
+# src/collectors/workday.py for how this endpoint works and why it needs
+# both a tenant (board_identifier) and a custom_config.wd_host/site pair.
+# This directly covers two of Roman's actual past employers (Lonza, Intel).
+#
+  - name: "Agilent Technologies"
+    industry: biotech
+    ats_type: workday
+    board_identifier: agilent
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Agilent_Careers
+  - name: "Amgen"
+    industry: biotech
+    ats_type: workday
+    board_identifier: amgen
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Careers
+  - name: "Arctic Wolf"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: arcticwolf
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Cadence Design Systems"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: cadence
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External_Careers
+  - name: "CrowdStrike"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: crowdstrike
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: CrowdstrikeCareers
+  - name: "Dexcom"
+    industry: biotech
+    ats_type: workday
+    board_identifier: dexcom
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Dexcom
+  - name: "Edwards Lifesciences"
+    industry: biotech
+    ats_type: workday
+    board_identifier: edwards
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: EdwardsCareers
+  - name: "Gilead Sciences"
+    industry: biotech
+    ats_type: workday
+    board_identifier: gilead
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: GileadCareers
+  - name: "Intel"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: intel
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Lonza"
+    industry: ot
+    ats_type: workday
+    board_identifier: lonza
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd3
+      site: Lonza_Careers
+  - name: "Neurocrine Biosciences"
+    industry: biotech
+    ats_type: workday
+    board_identifier: neurocrine
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: NeurocrineCareers
+  - name: "Optiv"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: optiv
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Optiv_Careers
+  - name: "Palo Alto Networks"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: paloaltonetworks
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: panwexternalcareers
+  - name: "Proofpoint"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: proofpoint
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: ProofpointCareers
+  - name: "ReliaQuest"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: reliaquest
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Reliaquest_Careers
+  - name: "Thermo Fisher Scientific"
+    industry: biotech
+    ats_type: workday
+    board_identifier: thermofisher
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: ThermofisherCareers
+  - name: "Verily"
+    industry: biotech
+    ats_type: workday
+    board_identifier: verily
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Verily_Careers
+  - name: "Zoom"
+    industry: technology
+    ats_type: workday
+    board_identifier: zoom
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Zoom
+
+# --- S&P 500 expansion (round 2: Workday) ---
+#
+# 47 companies below were confirmed by brute-forcing Workday tenant/site
+# combinations against the full S&P 500 constituent list (473 companies
+# not already covered), then verifying real job content for borderline
+# cases (e.g. CF Industries' Waggaman, LA and Northbrook, IL locations
+# match their actual plant/HQ; Essex Property Trust's Bay Area roles match
+# their West-Coast apartment REIT business). Dell Technologies resolved a
+# real tenant/site but returned 0 jobs, so it was excluded rather than
+# added with no actual value. Workday tenant/site names are typically
+# unique per company (unlike short Greenhouse/Lever/Ashby slugs, several
+# of which collided with unrelated companies in round 1 above), so
+# confidence here is higher.
+  - name: "Abbott Laboratories"
+    industry: biotech
+    ats_type: workday
+    board_identifier: abbott
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: AbbottCareers
+  - name: "Albemarle Corporation"
+    industry: energy
+    ats_type: workday
+    board_identifier: albemarle
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Allegion"
+    industry: technology
+    ats_type: workday
+    board_identifier: allegion
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "Allstate"
+    industry: technology
+    ats_type: workday
+    board_identifier: allstate
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Allstate_Careers
+  - name: "Ameren"
+    industry: energy
+    ats_type: workday
+    board_identifier: ameren
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Analog Devices"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: analogdevices
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Aptiv"
+    industry: technology
+    ats_type: workday
+    board_identifier: aptiv
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Aptiv_Careers
+  - name: "Assurant"
+    industry: technology
+    ats_type: workday
+    board_identifier: assurant
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Assurant_Careers
+  - name: "Blackstone Inc."
+    industry: technology
+    ats_type: workday
+    board_identifier: blackstone
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Blackstone_Careers
+  - name: "Broadridge Financial Solutions"
+    industry: technology
+    ats_type: workday
+    board_identifier: broadridge
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "CDW"
+    industry: technology
+    ats_type: workday
+    board_identifier: cdw
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "CF Industries"
+    industry: technology
+    ats_type: workday
+    board_identifier: cfindustries
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Careers
+  - name: "Chipotle Mexican Grill"
+    industry: technology
+    ats_type: workday
+    board_identifier: chipotle
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: ChipotleCareers
+  - name: "Ciena"
+    industry: technology
+    ats_type: workday
+    board_identifier: ciena
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "Cigna"
+    industry: technology
+    ats_type: workday
+    board_identifier: cigna
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: CignaCareers
+  - name: "Cisco"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: cisco
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Cisco_Careers
+  - name: "Comcast"
+    industry: technology
+    ats_type: workday
+    board_identifier: comcast
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Comcast_Careers
+  - name: "ConocoPhillips"
+    industry: energy
+    ats_type: workday
+    board_identifier: conocophillips
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Devon Energy"
+    industry: energy
+    ats_type: workday
+    board_identifier: devonenergy
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "Equifax"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: equifax
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Equinix"
+    industry: ot
+    ats_type: workday
+    board_identifier: equinix
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Essex Property Trust"
+    industry: technology
+    ats_type: workday
+    board_identifier: essex
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: EssexCareers
+  - name: "FICO"
+    industry: technology
+    ats_type: workday
+    board_identifier: fico
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Generac"
+    industry: ot
+    ats_type: workday
+    board_identifier: generac
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Jabil"
+    industry: ot
+    ats_type: workday
+    board_identifier: jabil
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Jabil_Careers
+  - name: "Labcorp"
+    industry: biotech
+    ats_type: workday
+    board_identifier: labcorp
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Leidos"
+    industry: cybersecurity
+    ats_type: workday
+    board_identifier: leidos
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Marvell Technology"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: marvell
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: MarvellCareers
+  - name: "Medtronic"
+    industry: biotech
+    ats_type: workday
+    board_identifier: medtronic
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: MedtronicCareers
+  - name: "Micron Technology"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: micron
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+  - name: "Motorola Solutions"
+    industry: technology
+    ats_type: workday
+    board_identifier: motorolasolutions
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "NXP Semiconductors"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: nxp
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd3
+      site: Careers
+  - name: "PNC Financial Services"
+    industry: technology
+    ats_type: workday
+    board_identifier: pnc
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "PPG Industries"
+    industry: technology
+    ats_type: workday
+    board_identifier: ppg
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Ppg_Careers
+  - name: "Pentair"
+    industry: technology
+    ats_type: workday
+    board_identifier: pentair
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Pentair_Careers
+  - name: "Pfizer"
+    industry: biotech
+    ats_type: workday
+    board_identifier: pfizer
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: PfizerCareers
+  - name: "Regeneron Pharmaceuticals"
+    industry: biotech
+    ats_type: workday
+    board_identifier: regeneron
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Careers
+  - name: "Regions Financial Corporation"
+    industry: technology
+    ats_type: workday
+    board_identifier: regions
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Regions_Careers
+  - name: "Stryker Corporation"
+    industry: biotech
+    ats_type: workday
+    board_identifier: stryker
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: StrykerCareers
+  - name: "Synchrony Financial"
+    industry: technology
+    ats_type: workday
+    board_identifier: synchronyfinancial
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Careers
+  - name: "Sysco"
+    industry: technology
+    ats_type: workday
+    board_identifier: sysco
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: SyscoCareers
+  - name: "Target Corporation"
+    industry: technology
+    ats_type: workday
+    board_identifier: target
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: TargetCareers
+  - name: "Trimble Inc."
+    industry: technology
+    ats_type: workday
+    board_identifier: trimble
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: TrimbleCareers
+  - name: "Truist Financial"
+    industry: technology
+    ats_type: workday
+    board_identifier: truist
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Careers
+  - name: "Viatris"
+    industry: biotech
+    ats_type: workday
+    board_identifier: viatris
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Williams Companies"
+    industry: energy
+    ats_type: workday
+    board_identifier: williams
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "Xcel Energy"
+    industry: energy
+    ats_type: workday
+    board_identifier: xcelenergy
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External
+
+# --- Review queue: known-important employers NOT yet configured ---
+#
+# These appear in Roman's background or target-employer list but did not
+# resolve against the public Greenhouse/Lever/Ashby/Workday APIs above —
+# they likely use SuccessFactors, iCIMS, Phenom, or a custom careers system
+# (or, for state/local government, no public JSON API at all). Rather than
+# guess and silently 404 forever, they're left out of `companies` until
+# someone confirms the actual ATS and adds a `custom` or `government` entry:
+#
+#   Direct resume employers: California Air Resources Board, UC Davis
+#     (state/UC HR portals, not Workday — no public JSON API found)
+#   Biotech/pharma: Genentech (confirmed Phenom People, not Workday), BioMarin,
+#     Illumina, Danaher, Bio-Rad Laboratories, Beckman Coulter, Cepheid, GRAIL,
+#     ResMed, Ionis Pharmaceuticals, Halozyme Therapeutics, ACADIA Pharmaceuticals,
+#     Intuitive Surgical, Align Technology, Masimo, Tandem Diabetes Care
+#   Cybersecurity: SentinelOne, CyberArk, Rapid7, Tenable, Fortinet, Check Point,
+#     Mandiant, Claroty, Forescout, Securonix, eSentire
+#   Semiconductor: Arm, Synopsys
+#   Other tech: Box, Slack, HashiCorp, DigitalOcean, Automation Anywhere
+#   OT/industrial: AVEVA, Bloom Energy, Sunrun, Oklo, Commonwealth Fusion Systems
+#   National labs / government: Lawrence Livermore National Laboratory, Sandia
+#     National Laboratories, SLAC, California Department of Technology —
+#     see src/collectors/government.py docstring for why CalCareers/state
+#     agencies aren't wired up yet (no stable public JSON API found).
+#
+# To add one: confirm its careers page, identify the ATS (view page source
+# or network tab for a Greenhouse/Lever/Ashby/Workday API call), then add
+# an entry with ats_type: custom (+ custom_config selectors) or leave a
+# comment here if it needs a collector type this project doesn't support yet.

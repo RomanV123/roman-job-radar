@@ -1,0 +1,36 @@
+# Optional containerized deployment. Requires .env and resume.pdf to
+# already exist in this directory (see README.md sections 3-4) before
+# building — both are bind-mounted in, never baked into the image.
+#
+#   docker compose up dashboard              # dashboard at http://localhost:8501
+#   docker compose run --rm pipeline         # one-off pipeline run
+#   docker compose run --rm pipeline python run_pipeline.py --dry-run
+#
+# The `pipeline` service is NOT started by `docker compose up` (it has no
+# default profile) — scheduling it is up to you; see SCHEDULING.md for the
+# equivalent of Windows Task Scheduler in a container context (host cron
+# calling `docker compose run --rm pipeline` works fine).
+
+services:
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./resume.pdf:/app/resume.pdf:ro
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  pipeline:
+    build: .
+    command: ["python", "run_pipeline.py"]
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./resume.pdf:/app/resume.pdf:ro
+    env_file:
+      - .env
+    profiles: ["manual"]
