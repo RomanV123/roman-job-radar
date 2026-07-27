@@ -2505,3 +2505,926 @@ companies:
     careers_url: null
     priority: 2
     active: true
+
+# Round 3 Workday (2026-07-26): expanded tenant/site-name guessing
+# against the remaining S&P 500 companies. Each hit's actual job
+# content (titles + locations) was checked before adding --
+# "W. W. Grainger" was rejected even though the "ww" tenant slug
+# resolved successfully: the returned jobs (Virtual Coach Creator,
+# Licensing & Consumer Products, Studios) are Weight Watchers (WW
+# International), the same "ww" collision already caught once
+# before on Greenhouse.
+  - name: "3M"
+    industry: technology
+    ats_type: workday
+    board_identifier: 3m
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Search
+  - name: "Amcor"
+    industry: technology
+    ats_type: workday
+    board_identifier: amcor
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Amcor_External_Career_Site
+  - name: "Autodesk"
+    industry: technology
+    ats_type: workday
+    board_identifier: autodesk
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: EXT
+  - name: "Boeing"
+    industry: technology
+    ats_type: workday
+    board_identifier: boeing
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External_Careers
+  - name: "Cardinal Health"
+    industry: technology
+    ats_type: workday
+    board_identifier: cardinalhealth
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: EXT
+  - name: "Duke Energy"
+    industry: energy
+    ats_type: workday
+    board_identifier: dukeenergy
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Search
+  - name: "Gartner"
+    industry: technology
+    ats_type: workday
+    board_identifier: gartner
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: EXT
+  - name: "Henry Schein"
+    industry: technology
+    ats_type: workday
+    board_identifier: henryschein
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: External_Careers
+  - name: "Humana"
+    industry: technology
+    ats_type: workday
+    board_identifier: humana
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: Humana_External_Career_Site
+  - name: "Illinois Tool Works"
+    industry: technology
+    ats_type: workday
+    board_identifier: itw
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: External
+  - name: "McKesson Corporation"
+    industry: technology
+    ats_type: workday
+    board_identifier: mckesson
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd3
+      site: External_Careers
+  - name: "Old Dominion Freight Line"
+    industry: technology
+    ats_type: workday
+    board_identifier: odfl
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: Odfl_Careers
+
+# Round 4 (2026-07-26): further expansion into gaming, edtech,
+# digital health, insurtech, quantum/AI-chip semiconductor, and
+# space/defense companies not covered by the S&P 500 or prior
+# rounds. Live-verified against real job content the same way as
+# prior rounds -- rejected "Galileo" (medical staffing, not the AI
+# eval company), "Lex Machina" (an electrical contractor holding
+# the "lex" slug, not the legal-analytics company), and "Sierra
+# Space" (the "sierra" Ashby slug is actually Sierra, the AI agent
+# startup, based on job content).
+  - name: "360Learning"
+    industry: technology
+    ats_type: lever
+    board_identifier: 360learning
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "6sense"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: 6sense
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Absorb LMS"
+    industry: technology
+    ats_type: ashby
+    board_identifier: absorblms
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Angi"
+    industry: technology
+    ats_type: ashby
+    board_identifier: angi
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Apollo.io"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: apolloio
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Arize AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: arizeai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bestow"
+    industry: technology
+    ats_type: ashby
+    board_identifier: bestow
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "BetterHelp"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: betterhelp
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "BlackSky"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: blacksky
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Branch Insurance"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: branch
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Buildkite"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: buildkite
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bungie"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: bungie
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Calm"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: calm
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Capella Space"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: capellaspace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Carrot Fertility"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: carrotfertility
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cerebral"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: cerebral
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "CircleCI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: circleci
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "ClassDojo"
+    industry: technology
+    ats_type: ashby
+    board_identifier: classdojo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Coalition"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: coalition
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cognism"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: cognism
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Color Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: color-health
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Comet ML"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: comet
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Coursera"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: coursera
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cowbell Cyber"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: cowbellcyber
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "DISCO"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: disco
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Degreed"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: degreed
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Demandbase"
+    industry: technology
+    ats_type: ashby
+    board_identifier: demandbase
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Descript"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: descript
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Discord"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: discord
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Duolingo"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: duolingo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Eight Sleep"
+    industry: technology
+    ats_type: ashby
+    board_identifier: eightsleep
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "ElevenLabs"
+    industry: technology
+    ats_type: ashby
+    board_identifier: elevenlabs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Epic Games"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: epicgames
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Epirus"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: epirus
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Etched"
+    industry: technology
+    ats_type: ashby
+    board_identifier: etched
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Ethos Life"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: ethoslife
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Everlaw"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: everlaw
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Fireworks AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: fireworksai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "FullStory"
+    industry: technology
+    ats_type: ashby
+    board_identifier: fullstory
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Graphcore"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: graphcore
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Guild Education"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: guild
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Harvey"
+    industry: technology
+    ats_type: ashby
+    board_identifier: harvey
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Highspot"
+    industry: technology
+    ats_type: lever
+    board_identifier: highspot
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Hinge Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: hinge-health
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "HoneyBook"
+    industry: technology
+    ats_type: ashby
+    board_identifier: honeybook
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "IXL Learning"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: ixllearning
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Imbue"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: imbue
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Impulse Space"
+    industry: technology
+    ats_type: ashby
+    board_identifier: impulse
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Included Health"
+    industry: technology
+    ats_type: lever
+    board_identifier: includedhealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Inflection AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: inflectionai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "IonQ"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: ionq
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Kin Insurance"
+    industry: technology
+    ats_type: ashby
+    board_identifier: kin
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "LangChain"
+    industry: technology
+    ats_type: ashby
+    board_identifier: langchain
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Lemonade"
+    industry: technology
+    ats_type: ashby
+    board_identifier: lemonade
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Levels Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: levels
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Lightmatter"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: lightmatter
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "LlamaIndex"
+    industry: technology
+    ats_type: ashby
+    board_identifier: llamaindex
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Loft Orbital"
+    industry: technology
+    ats_type: lever
+    board_identifier: loftorbital
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "LogRocket"
+    industry: technology
+    ats_type: lever
+    board_identifier: logrocket
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Lyra Health"
+    industry: technology
+    ats_type: lever
+    board_identifier: lyrahealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Maven Clinic"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: mavenclinic
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Mindtickle"
+    industry: technology
+    ats_type: lever
+    board_identifier: mindtickle
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Modern Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: modernhealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Monogram Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: monogram
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Nayya"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: nayya
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Newsela"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: newsela
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Nuna"
+    industry: technology
+    ats_type: ashby
+    board_identifier: nuna
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Omada Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: omadahealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Onit"
+    industry: technology
+    ats_type: lever
+    board_identifier: onit
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Openly"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: openly
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Oscar Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: oscar
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Otter.ai"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: otterai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Oura"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: oura
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Outreach"
+    industry: technology
+    ats_type: lever
+    board_identifier: outreach
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Outschool"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: outschool
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Panopto"
+    industry: technology
+    ats_type: lever
+    board_identifier: panopto
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Papa"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: papa
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Pinecone"
+    industry: technology
+    ats_type: ashby
+    board_identifier: pinecone
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "PsiQuantum"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: psiquantum
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Rigetti Computing"
+    industry: semiconductor
+    ats_type: lever
+    board_identifier: rigetti
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Riot Games"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: riotgames
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Ro"
+    industry: technology
+    ats_type: lever
+    board_identifier: ro
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Roblox"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: roblox
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Salesloft"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: salesloft
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Scopely"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: scopely
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Showpad"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: showpad
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sierra"
+    industry: technology
+    ats_type: ashby
+    board_identifier: sierra
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Spekit"
+    industry: technology
+    ats_type: ashby
+    board_identifier: spekit
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Strive Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: strivehealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Suno"
+    industry: technology
+    ats_type: ashby
+    board_identifier: suno
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Supercell"
+    industry: technology
+    ats_type: ashby
+    board_identifier: supercell
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sword Health"
+    industry: technology
+    ats_type: lever
+    board_identifier: swordhealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Synthesia"
+    industry: technology
+    ats_type: ashby
+    board_identifier: synthesia
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Talkspace"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: talkspace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Tenstorrent"
+    industry: semiconductor
+    ats_type: greenhouse
+    board_identifier: tenstorrent
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Thumbtack"
+    industry: technology
+    ats_type: ashby
+    board_identifier: thumbtack
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Twitch"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: twitch
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Two Chairs"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: twochairs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Udemy"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: udemy
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Udio"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: udio
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "VTS"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: vts
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Varda Space Industries"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: vardaspace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Vida Health"
+    industry: technology
+    ats_type: lever
+    board_identifier: vida
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Virta Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: virtahealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "WHOOP"
+    industry: technology
+    ats_type: lever
+    board_identifier: whoop
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "WalkMe"
+    industry: technology
+    ats_type: lever
+    board_identifier: walkme
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Weaviate"
+    industry: technology
+    ats_type: ashby
+    board_identifier: weaviate
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Wellthy"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: wellthy
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Writer"
+    industry: technology
+    ats_type: ashby
+    board_identifier: writer
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Zilliz"
+    industry: technology
+    ats_type: lever
+    board_identifier: zilliz
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "ZoomInfo"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: zoominfo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "d-Matrix"
+    industry: semiconductor
+    ats_type: ashby
+    board_identifier: d-matrix
+    careers_url: null
+    priority: 2
+    active: true
