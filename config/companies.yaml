@@ -557,8 +557,13 @@ companies:
     careers_url: null
     priority: 2
     active: true
-  - name: "Kodiak Sciences"
-    industry: biotech
+  # NOTE: this "kodiak" Greenhouse board was originally mislabeled
+  # "Kodiak Sciences" (biotech). Live content is actually Kodiak
+  # Robotics (autonomous trucking) -- Class A CDL Driver, AV Build
+  # Technician, Functional Safety Engineer, Mountain View CA HQ.
+  # Corrected 2026-07-26.
+  - name: "Kodiak Robotics"
+    industry: technology
     ats_type: greenhouse
     board_identifier: kodiak
     careers_url: null
@@ -1903,13 +1908,6 @@ companies:
     careers_url: null
     priority: 2
     active: true
-  - name: "Beam Therapeutics"
-    industry: biotech
-    ats_type: greenhouse
-    board_identifier: beam
-    careers_url: null
-    priority: 1
-    active: true
   - name: "Bill.com"
     industry: technology
     ats_type: greenhouse
@@ -2250,13 +2248,6 @@ companies:
     industry: cybersecurity
     ats_type: greenhouse
     board_identifier: onetrust
-    careers_url: null
-    priority: 1
-    active: true
-  - name: "Orca Security"
-    industry: cybersecurity
-    ats_type: greenhouse
-    board_identifier: orca
     careers_url: null
     priority: 1
     active: true
@@ -3425,6 +3416,469 @@ companies:
     industry: semiconductor
     ats_type: ashby
     board_identifier: d-matrix
+    careers_url: null
+    priority: 2
+    active: true
+
+# Round 5 (2026-07-26): robotics/AV, space/defense, logistics,
+# fraud/identity fintech, and consumer-tech companies. Live-
+# verified the same way as prior rounds -- rejected "Allied
+# Universal" (the "allied" slug is a small Ogden, UT HVAC/plumbing
+# contractor), "Beyond Meat" (the "beyond" slug is an unrelated
+# remote-first SaaS company with EU roles), "Carbon Health" and
+# "Blue Yonder"/"Blue Apron" (ambiguous generic slugs "carbon"/
+# "blue" that don't clearly match either company), and "Athena
+# Security"/"Flock Safety" (their slugs' actual job content points
+# to different companies entirely) after checking sample job
+# content. Also fixed a pre-existing mislabeling: the "kodiak"
+# Greenhouse board was tagged "Kodiak Sciences" (biotech) but is
+# actually Kodiak Robotics (autonomous trucking) -- see the fix
+# next to that entry above.
+  - name: "1X Technologies"
+    industry: technology
+    ats_type: ashby
+    board_identifier: 1x
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Agility Robotics"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: agilityrobotics
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Albedo Space"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: albedo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Alloy"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: alloy
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Apptronik"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: apptronik
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Arkose Labs"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: arkoselabs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Arlo Technologies"
+    industry: technology
+    ats_type: ashby
+    board_identifier: arlo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Away"
+    industry: technology
+    ats_type: ashby
+    board_identifier: away
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bird Rides"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: bird
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bombas"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: bombas
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bond Vet"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: bondvet
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Bringg"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: bringg
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Capsule Pharmacy"
+    industry: technology
+    ats_type: ashby
+    board_identifier: capsule
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Cobalt Robotics"
+    industry: technology
+    ats_type: lever
+    board_identifier: cobaltrobotics
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Diligent Robotics"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: diligentrobotics
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Faire"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: faire
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Feedzai"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: feedzai
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Flexport"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: flexport
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Flock Freight"
+    industry: technology
+    ats_type: ashby
+    board_identifier: flock
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Forter"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: forter
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Forward Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: forward
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "FourKites"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: fourkites
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Fourier Intelligence"
+    industry: technology
+    ats_type: ashby
+    board_identifier: fourier
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "GOAT Group"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: goatgroup
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Gecko Robotics"
+    industry: technology
+    ats_type: ashby
+    board_identifier: gecko-robotics
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Glossier"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: glossier
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Gopuff"
+    industry: technology
+    ats_type: lever
+    board_identifier: gopuff
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "HUMAN Security"
+    industry: technology
+    ats_type: ashby
+    board_identifier: human
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "HawkEye 360"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: hawkeye360
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "HelloFresh"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: hellofresh
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "ICEYE"
+    industry: technology
+    ats_type: ashby
+    board_identifier: iceye
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Indigo Agriculture"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: indigo
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Kasada"
+    industry: technology
+    ats_type: lever
+    board_identifier: kasada
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Katana MRP"
+    industry: technology
+    ats_type: ashby
+    board_identifier: katana
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Lyft"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: lyft
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "May Mobility"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: maymobility
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Motional"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: motional
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Motive"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: motive
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Muon Space"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: muonspace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "NICE Ltd"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: nice
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "One Medical"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: onemedical
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Parsley Health"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: parsleyhealth
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Persona Identities"
+    industry: technology
+    ats_type: ashby
+    board_identifier: persona
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Pivot Bio"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: pivotbio
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Pronto AI"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: pronto
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Rent the Runway"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: renttherunway
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Rhombus Systems"
+    industry: technology
+    ats_type: lever
+    board_identifier: rhombus-systems
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Riskified"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: riskified
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Sardine"
+    industry: technology
+    ats_type: ashby
+    board_identifier: sardine
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Second Front Systems"
+    industry: technology
+    ats_type: ashby
+    board_identifier: second-front-systems
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "SimpliSafe"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: simplisafe
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Slingshot Aerospace"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: slingshotaerospace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Socure"
+    industry: technology
+    ats_type: ashby
+    board_identifier: socure
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Stitch Fix"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: stitchfix
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "StockX"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: stockx
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Treasury Prime"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: treasuryprime
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Turion Space"
+    industry: technology
+    ats_type: ashby
+    board_identifier: turion-space
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Uber Freight"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: uberfreight
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Vannevar Labs"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: vannevarlabs
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Wheel Health"
+    industry: technology
+    ats_type: ashby
+    board_identifier: wheel
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Wing Aviation"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: wing
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Xero"
+    industry: technology
+    ats_type: ashby
+    board_identifier: xero
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Zoox"
+    industry: technology
+    ats_type: lever
+    board_identifier: zoox
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "project44"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: project44
     careers_url: null
     priority: 2
     active: true
