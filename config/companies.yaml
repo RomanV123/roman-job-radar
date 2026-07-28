@@ -4015,3 +4015,18 @@ companies:
     careers_url: null
     priority: 2
     active: true
+
+# ServiceTitan (2026-07-28): careers page load sniffed a myworkdayjobs.com
+# reference (tenant lowercase "servicetitan", site "ServiceTitan" note the
+# capitalization -- Workday site names are case-sensitive in the URL path),
+# confirmed against the real cxs endpoint (85 live jobs).
+  - name: "ServiceTitan"
+    industry: technology
+    ats_type: workday
+    board_identifier: servicetitan
+    careers_url: null
+    priority: 2
+    active: true
+    custom_config:
+      wd_host: wd1
+      site: ServiceTitan
