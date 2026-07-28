@@ -142,10 +142,8 @@ def _bucket_all_jobs(rows: list[tuple[Job, Company]]) -> Buckets:
         )
     for category in CATEGORY_ORDER:
         for employment_type in EMPLOYMENT_ORDER:
-            jobs = buckets[category][employment_type]
-            jobs.sort(key=lambda j: _sort_key_posted_at(j.posted_at), reverse=True)
-            buckets[category][employment_type] = jobs[:MAX_ALL_JOBS_PER_SECTION]
-    return buckets
+            buckets[category][employment_type].sort(key=lambda j: _sort_key_posted_at(j.posted_at), reverse=True)
+    return buckets  # deliberately NOT capped here -- see _write_section_pages for where the cap is applied
 
 
 def _bucket_matched_jobs(rows: list[JobRow]) -> Buckets:
@@ -172,10 +170,8 @@ def _bucket_matched_jobs(rows: list[JobRow]) -> Buckets:
         )
     for category in CATEGORY_ORDER:
         for employment_type in EMPLOYMENT_ORDER:
-            jobs = buckets[category][employment_type]
-            jobs.sort(key=lambda j: j.score or 0.0, reverse=True)
-            buckets[category][employment_type] = jobs[:MAX_MATCHED_PER_SECTION]
-    return buckets
+            buckets[category][employment_type].sort(key=lambda j: j.score or 0.0, reverse=True)
+    return buckets  # deliberately NOT capped here -- see _write_section_pages for where the cap is applied
 
 
 def _render_table(jobs: list[BoardJob], show_score: bool) -> str:
@@ -204,24 +200,42 @@ def _render_table(jobs: list[BoardJob], show_score: bool) -> str:
 def _write_section_pages(
     output_dir: Path, category: str, employment_type: str, all_jobs: list[BoardJob], matched_jobs: list[BoardJob]
 ) -> None:
+    """`all_jobs`/`matched_jobs` are the FULL sorted lists, not yet capped --
+    the cap is applied here, at render time, so the true total can still be
+    stated honestly even when the table itself only shows a slice of it."""
     section_dir = output_dir / CATEGORY_DIRS[category] / EMPLOYMENT_DIRS[employment_type]
     section_dir.mkdir(parents=True, exist_ok=True)
     category_label = CATEGORY_LABELS[category]
     employment_label = EMPLOYMENT_LABELS[employment_type]
 
+    matched_total = len(matched_jobs)
+    matched_shown = matched_jobs[:MAX_MATCHED_PER_SECTION]
+    matched_note = (
+        f"Showing all {matched_total}."
+        if matched_total <= MAX_MATCHED_PER_SECTION
+        else f"**{matched_total} total** — showing the top {MAX_MATCHED_PER_SECTION} by score."
+    )
     (section_dir / "matched-for-me.md").write_text(
         f"# {category_label} {employment_label} — Matched for Roman\n\n"
         f"Jobs scored at or above {MIN_MATCH_SCORE:.0f} against Roman's resume, highest score first. "
-        f"Showing up to {MAX_MATCHED_PER_SECTION}.\n\n"
-        + _render_table(matched_jobs, show_score=True),
+        f"{matched_note}\n\n"
+        + _render_table(matched_shown, show_score=True),
         encoding="utf-8",
+    )
+
+    all_total = len(all_jobs)
+    all_shown = all_jobs[:MAX_ALL_JOBS_PER_SECTION]
+    all_note = (
+        f"Showing all {all_total}."
+        if all_total <= MAX_ALL_JOBS_PER_SECTION
+        else f"**{all_total} total found** — showing the {MAX_ALL_JOBS_PER_SECTION} most recently posted "
+        f"(the dashboard in the main app always has the full list)."
     )
     (section_dir / "all-jobs.md").write_text(
         f"# {category_label} {employment_label} — All Jobs Found\n\n"
         f"Every active {category_label.lower()} {employment_label.lower()} posting the pipeline has found, "
-        f"unfiltered by resume fit, most recently posted first. "
-        f"Showing up to {MAX_ALL_JOBS_PER_SECTION} of the total found.\n\n"
-        + _render_table(all_jobs, show_score=False),
+        f"unfiltered by resume fit, most recently posted first. {all_note}\n\n"
+        + _render_table(all_shown, show_score=False),
         encoding="utf-8",
     )
 
