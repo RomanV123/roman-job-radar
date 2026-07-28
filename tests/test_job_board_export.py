@@ -54,12 +54,12 @@ def make_job_row(**overrides) -> JobRow:
     return JobRow(**defaults)
 
 
-def make_job_company(title="SOC Analyst", posted_at=None, company_name="Acme"):
+def make_job_company(title="SOC Analyst", posted_at=None, company_name="Acme", employment_type="full_time"):
     job = SimpleNamespace(
         title=title,
         location="Sacramento, CA",
         workplace_type="remote",
-        employment_type="full_time",
+        employment_type=employment_type,
         posted_at=posted_at or datetime(2026, 1, 1, tzinfo=timezone.utc),
         apply_url="https://acme.com/jobs/1",
         source_url="https://acme.com/jobs/1",
@@ -93,10 +93,26 @@ def test_bucket_all_jobs_groups_by_category_and_sorts_by_recency():
 
     buckets = _bucket_all_jobs([old_job, new_job, unrelated])
 
-    assert len(buckets["cybersecurity"]) == 2
-    assert buckets["cybersecurity"][0].title == "Security Engineer"  # most recent first
-    assert all(cat != "cybersecurity" or len(jobs) <= 2 for cat, jobs in buckets.items())
-    assert buckets["software_engineering"] == []  # "Warehouse Associate" doesn't match any category
+    cyber_full_time = buckets["cybersecurity"]["full_time"]
+    assert len(cyber_full_time) == 2
+    assert cyber_full_time[0].title == "Security Engineer"  # most recent first
+    assert buckets["software_engineering"]["full_time"] == []  # "Warehouse Associate" matches no category
+
+
+def test_bucket_all_jobs_splits_by_employment_type():
+    full_time = make_job_company(title="SOC Analyst", employment_type="full_time")
+    intern = make_job_company(title="Security Intern", employment_type="internship")
+    contract = make_job_company(title="Security Contractor", employment_type="contract")
+
+    buckets = _bucket_all_jobs([full_time, intern, contract])
+
+    assert len(buckets["cybersecurity"]["full_time"]) == 1
+    assert len(buckets["cybersecurity"]["internship"]) == 1
+    assert buckets["cybersecurity"]["full_time"][0].title == "SOC Analyst"
+    assert buckets["cybersecurity"]["internship"][0].title == "Security Intern"
+    # contract isn't one of the two board employment types -- excluded entirely
+    all_titles = [j.title for et in buckets["cybersecurity"].values() for j in et]
+    assert "Security Contractor" not in all_titles
 
 
 def test_bucket_matched_jobs_filters_below_min_score():
@@ -105,8 +121,8 @@ def test_bucket_matched_jobs_filters_below_min_score():
 
     buckets = _bucket_matched_jobs([high, low])
 
-    assert len(buckets["cybersecurity"]) == 1
-    assert buckets["cybersecurity"][0].score == 85.0
+    assert len(buckets["cybersecurity"]["full_time"]) == 1
+    assert buckets["cybersecurity"]["full_time"][0].score == 85.0
 
 
 def test_bucket_matched_jobs_sorts_by_score_descending():
@@ -115,8 +131,18 @@ def test_bucket_matched_jobs_sorts_by_score_descending():
 
     buckets = _bucket_matched_jobs([lower, higher])
 
-    scores = [j.score for j in buckets["cybersecurity"]]
+    scores = [j.score for j in buckets["cybersecurity"]["full_time"]]
     assert scores == sorted(scores, reverse=True)
+
+
+def test_bucket_matched_jobs_splits_by_employment_type():
+    full_time = make_job_row(title="SOC Analyst", employment_type="full_time", total_score=80.0)
+    intern = make_job_row(title="Security Intern", employment_type="internship", total_score=75.0)
+
+    buckets = _bucket_matched_jobs([full_time, intern])
+
+    assert len(buckets["cybersecurity"]["full_time"]) == 1
+    assert len(buckets["cybersecurity"]["internship"]) == 1
 
 
 def test_render_table_empty_list():
