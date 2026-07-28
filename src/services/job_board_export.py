@@ -37,6 +37,7 @@ from sqlalchemy import select
 from src.database.models import Company, Job
 from src.database.session import get_session
 from src.logging_config import get_logger
+from src.processing.normalize import is_us_location
 from src.services.dashboard_data import JobRow, load_visible_jobs
 from src.services.job_categorizer import CATEGORY_ORDER, categorize_job
 
@@ -108,11 +109,13 @@ def _sort_key_posted_at(dt: datetime | None) -> datetime:
 
 
 def _load_all_active_jobs() -> list[tuple[Job, Company]]:
+    """US-only, same as load_visible_jobs -- see its docstring for why this
+    is re-derived at read time instead of trusting a stored flag."""
     with get_session() as session:
         rows = session.execute(
             select(Job, Company).join(Company, Company.id == Job.company_id).where(Job.is_active.is_(True))
         ).all()
-        return [(job, company) for job, company in rows]
+        return [(job, company) for job, company in rows if is_us_location(job.location, job.state) is True]
 
 
 def _load_matched_jobs() -> list[JobRow]:

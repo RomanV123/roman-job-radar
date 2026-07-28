@@ -13,6 +13,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from src.database.models import Application, Company, Job, JobMatch
+from src.processing.normalize import is_us_location
 
 
 @dataclass
@@ -80,7 +81,15 @@ def _parse_matching_skills(raw: str | None) -> list[str]:
 def load_visible_jobs(session: Session, only_active: bool = True) -> list[JobRow]:
     """Loads every job that has at least one score, paired with its most
     recent JobMatch (a job can be re-scored across pipeline runs) and its
-    application status, if any."""
+    application status, if any.
+
+    US-only by design: a job is included only when its stored location
+    resolves to a confirmed US location (see is_us_location) -- ambiguous
+    locations (e.g. a bare "Remote" with no country given) are excluded,
+    not just confirmed-non-US ones. This runs at read time rather than
+    relying solely on eligibility filtering at collection time, so it takes
+    effect immediately on jobs already sitting in the database, not just
+    ones scored by a future pipeline run."""
     latest_eval = (
         select(JobMatch.job_id, func.max(JobMatch.evaluated_at).label("max_evaluated_at"))
         .group_by(JobMatch.job_id)
@@ -102,6 +111,8 @@ def load_visible_jobs(session: Session, only_active: bool = True) -> list[JobRow
 
     rows: list[JobRow] = []
     for job, match, company, application in session.execute(query).all():
+        if is_us_location(job.location, job.state) is not True:
+            continue
         missing_required, missing_preferred = _parse_missing_skills(match.missing_skills)
         rows.append(
             JobRow(

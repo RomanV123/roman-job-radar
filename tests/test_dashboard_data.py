@@ -291,7 +291,7 @@ def test_load_visible_jobs_tolerates_malformed_json_columns(session):
     company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
     session.add(company)
     session.commit()
-    job = Job(external_id="1", source="greenhouse", company_id=company.id, title="Analyst")
+    job = Job(external_id="1", source="greenhouse", company_id=company.id, title="Analyst", location="Sacramento, CA")
     session.add(job)
     session.commit()
     match = JobMatch(
@@ -313,7 +313,7 @@ def test_load_visible_jobs_tolerates_flat_list_missing_skills_shape(session):
     company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
     session.add(company)
     session.commit()
-    job = Job(external_id="1", source="greenhouse", company_id=company.id, title="Analyst")
+    job = Job(external_id="1", source="greenhouse", company_id=company.id, title="Analyst", location="Sacramento, CA")
     session.add(job)
     session.commit()
     match = JobMatch(job_id=job.id, total_score=70.0, missing_skills='["AWS", "Docker"]')
@@ -323,6 +323,63 @@ def test_load_visible_jobs_tolerates_flat_list_missing_skills_shape(session):
     rows = load_visible_jobs(session)
     assert rows[0].missing_required_skills == ["AWS", "Docker"]
     assert rows[0].missing_preferred_skills == []
+
+
+def _add_job_with_match(session, company, external_id, location=None, state=None, total_score=70.0):
+    job = Job(
+        external_id=external_id, source="greenhouse", company_id=company.id,
+        title="Analyst", location=location, state=state,
+    )
+    session.add(job)
+    session.commit()
+    session.add(JobMatch(job_id=job.id, total_score=total_score))
+    session.commit()
+    return job
+
+
+def test_load_visible_jobs_excludes_confirmed_non_us(session):
+    company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
+    session.add(company)
+    session.commit()
+    _add_job_with_match(session, company, "us-job", location="Sacramento, CA")
+    _add_job_with_match(session, company, "uk-job", location="London, United Kingdom")
+
+    rows = load_visible_jobs(session)
+
+    assert [r.job_id for r in rows] == [1]  # only the US job survives
+
+
+def test_load_visible_jobs_excludes_ambiguous_location():
+    """A bare "Remote" with no country/state signal is unknown, not
+    confirmed-US -- the US-only filter is deliberately strict and excludes
+    it too, not just jobs confirmed to be outside the US."""
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
+    company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
+    session.add(company)
+    session.commit()
+    _add_job_with_match(session, company, "ambiguous-job", location="Remote")
+
+    rows = load_visible_jobs(session)
+
+    assert rows == []
+
+
+def test_load_visible_jobs_includes_job_identified_by_state_alone():
+    """A job with no free-text location but a resolved `state` column
+    (already-parsed structured data) should still count as confirmed US."""
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
+    company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
+    session.add(company)
+    session.commit()
+    _add_job_with_match(session, company, "state-only-job", location=None, state="CA")
+
+    rows = load_visible_jobs(session)
+
+    assert len(rows) == 1
 
 
 def test_load_visible_jobs_returns_expected_row(session, seeded_job):

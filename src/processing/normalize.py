@@ -178,6 +178,29 @@ def _location_from_text(location_text: str | None) -> LocationInfo:
     return LocationInfo(display=location_text, state=None, is_us=None)
 
 
+def is_us_location(location_text: str | None, state: str | None = None) -> bool | None:
+    """Re-derives the US/non-US/unknown classification from a job's stored
+    `location` (and `state`, if already known) at read time -- dashboard
+    queries, job board export -- anywhere that needs a US-only filter after
+    the job is already persisted.
+
+    `is_us` itself is never persisted -- the `jobs` table has no country
+    column (see NormalizedJob's is_us docstring) -- so this recomputes it
+    from the same text heuristic the pipeline used, rather than trusting a
+    stored flag that doesn't exist. A known `state` (a valid two-letter
+    USPS abbreviation, already resolved and stored on the Job row) is a
+    strong, cheap positive signal and is checked first before falling back
+    to `location_text`. This intentionally can't recover the richer
+    structured signal some ATSes provide at collection time (e.g. Lever's
+    ISO country code), so a small number of ambiguous-but-actually-US
+    listings (e.g. a bare "Remote" with no country qualifier and no parsed
+    state) will come back as unknown rather than True.
+    """
+    if state and state in _VALID_STATE_ABBRS:
+        return True
+    return _location_from_text(location_text).is_us
+
+
 def _location_from_lever(raw: dict[str, Any], location_text: str | None) -> LocationInfo:
     country = raw.get("country")  # ISO alpha-2, e.g. "US" — confirmed via live API
     if country:
