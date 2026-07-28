@@ -3909,3 +3909,109 @@ companies:
     careers_url: "https://www.amazon.jobs"
     priority: 2
     active: true
+
+# Construction-tech / built-world AI (2026-07-28): from a
+# ChatGPT deep-research report on construction AI employers Roman
+# asked about. Live-verified the same way as every other round --
+# rejected "Zero RFI" (the "zero" slug is an unrelated company),
+# "Build Technologies" (the "build" slug is a different, unrelated
+# infrastructure/energy company), "Gradient Robotics" (the
+# "gradient" slug is a different AI research company, not the
+# construction-robotics startup), and "Trunk Tools" (board exists
+# but has 0 open postings). Large enterprise construction firms from
+# the same report (Bechtel, Kiewit, Turner, DPR, Suffolk, Skanska,
+# Jacobs, PCL, Mortenson, Gilbane, Fluor, Hexagon, Oracle,
+# Nemetschek, ServiceTitan, CMiC) weren't found on Greenhouse/
+# Lever/Ashby/Workday -- likely SuccessFactors/Taleo/custom sites,
+# the same known gap as other enterprise employers in this file.
+  - name: "Bobyard"
+    industry: technology
+    ats_type: ashby
+    board_identifier: bobyard
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "BuildOps"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: buildops
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Buildout"
+    industry: technology
+    ats_type: ashby
+    board_identifier: buildout
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Doxel"
+    industry: technology
+    ats_type: lever
+    board_identifier: doxel
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "DroneDeploy"
+    industry: technology
+    ats_type: lever
+    board_identifier: dronedeploy
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Fieldwire"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: fieldwire
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "OfficeSpace Software"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: officespacesoftware
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "OpenSpace"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: openspace
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "PlanRadar"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: planradar
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Rugged Robotics"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: ruggedrobotics
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Tenna"
+    industry: technology
+    ats_type: lever
+    board_identifier: tenna
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "Workato"
+    industry: technology
+    ats_type: greenhouse
+    board_identifier: workato
+    careers_url: null
+    priority: 2
+    active: true
+  - name: "n8n"
+    industry: technology
+    ats_type: ashby
+    board_identifier: n8n
+    careers_url: null
+    priority: 2
+    active: true
