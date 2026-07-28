@@ -83,13 +83,14 @@ def load_visible_jobs(session: Session, only_active: bool = True) -> list[JobRow
     recent JobMatch (a job can be re-scored across pipeline runs) and its
     application status, if any.
 
-    US-only by design: a job is included only when its stored location
-    resolves to a confirmed US location (see is_us_location) -- ambiguous
-    locations (e.g. a bare "Remote" with no country given) are excluded,
-    not just confirmed-non-US ones. This runs at read time rather than
-    relying solely on eligibility filtering at collection time, so it takes
-    effect immediately on jobs already sitting in the database, not just
-    ones scored by a future pipeline run."""
+    US-only by design: a job is excluded only when its stored location
+    resolves to a confirmed non-US location (see is_us_location). Ambiguous
+    locations (e.g. a bare "Remote" with no country given) are kept, not
+    treated as non-US -- most companies on this board are US-based, so an
+    unlabeled remote posting is far more likely US than not. This runs at
+    read time rather than relying solely on eligibility filtering at
+    collection time, so it takes effect immediately on jobs already sitting
+    in the database, not just ones scored by a future pipeline run."""
     latest_eval = (
         select(JobMatch.job_id, func.max(JobMatch.evaluated_at).label("max_evaluated_at"))
         .group_by(JobMatch.job_id)
@@ -111,7 +112,7 @@ def load_visible_jobs(session: Session, only_active: bool = True) -> list[JobRow
 
     rows: list[JobRow] = []
     for job, match, company, application in session.execute(query).all():
-        if is_us_location(job.location, job.state) is not True:
+        if is_us_location(job.location, job.state) is False:
             continue
         missing_required, missing_preferred = _parse_missing_skills(match.missing_skills)
         rows.append(

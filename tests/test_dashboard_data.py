@@ -349,10 +349,10 @@ def test_load_visible_jobs_excludes_confirmed_non_us(session):
     assert [r.job_id for r in rows] == [1]  # only the US job survives
 
 
-def test_load_visible_jobs_excludes_ambiguous_location():
+def test_load_visible_jobs_keeps_ambiguous_location():
     """A bare "Remote" with no country/state signal is unknown, not
-    confirmed-US -- the US-only filter is deliberately strict and excludes
-    it too, not just jobs confirmed to be outside the US."""
+    confirmed-non-US -- most companies on this board are US-based, so an
+    unlabeled remote posting is kept rather than treated as foreign."""
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
     session = sessionmaker(bind=engine)()
@@ -363,7 +363,7 @@ def test_load_visible_jobs_excludes_ambiguous_location():
 
     rows = load_visible_jobs(session)
 
-    assert rows == []
+    assert len(rows) == 1
 
 
 def test_load_visible_jobs_includes_job_identified_by_state_alone():

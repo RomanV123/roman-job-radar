@@ -109,13 +109,14 @@ def _sort_key_posted_at(dt: datetime | None) -> datetime:
 
 
 def _load_all_active_jobs() -> list[tuple[Job, Company]]:
-    """US-only, same as load_visible_jobs -- see its docstring for why this
-    is re-derived at read time instead of trusting a stored flag."""
+    """Excludes confirmed non-US jobs, same as load_visible_jobs -- see its
+    docstring for why this is re-derived at read time instead of trusting a
+    stored flag, and why ambiguous locations are kept rather than dropped."""
     with get_session() as session:
         rows = session.execute(
             select(Job, Company).join(Company, Company.id == Job.company_id).where(Job.is_active.is_(True))
         ).all()
-        return [(job, company) for job, company in rows if is_us_location(job.location, job.state) is True]
+        return [(job, company) for job, company in rows if is_us_location(job.location, job.state) is not False]
 
 
 def _load_matched_jobs() -> list[JobRow]:
