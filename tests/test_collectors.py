@@ -4,6 +4,7 @@ import httpx
 import pytest
 import respx
 
+from src.collectors.amazon import AmazonCollector
 from src.collectors.ashby import AshbyCollector
 from src.collectors.base import CollectorError, CompanySource
 from src.collectors.custom_page import CustomPageCollector
@@ -584,6 +585,134 @@ def test_workday_404_raises_collector_error():
         collector.fetch_jobs(company)
 
 
+# ---------- Amazon ----------
+
+AMAZON_SEARCH_URL = "https://www.amazon.jobs/en/search.json"
+
+
+def amazon_posting(n: int, location: str = "Fredericksburg, Virginia, USA") -> dict:
+    return {
+        "id_icims": 1000 + n,
+        "title": f"Data Center Engineer {n}",
+        "normalized_location": location,
+        "description": "Own the design of AWS infrastructure.",
+        "basic_qualifications": "Bachelor's degree required.",
+        "preferred_qualifications": "5+ years experience.",
+        "job_path": f"/en/jobs/{1000 + n}/data-center-engineer",
+        "url_next_step": f"https://account.amazon.jobs/jobs/{1000 + n}/apply",
+        "posted_date": "July 28, 2026",
+        "job_category": "Operations, IT, & Support Engineering",
+        "job_family": "Tech Ops Engineering",
+    }
+
+
+@respx.mock
+def test_amazon_happy_path_single_page():
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    respx.get(AMAZON_SEARCH_URL).mock(
+        return_value=httpx.Response(200, json={"jobs": [amazon_posting(1)]})
+    )
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert len(jobs) == 1
+    job = jobs[0]
+    assert job.external_id == "1001"
+    assert job.title == "Data Center Engineer 1"
+    assert job.location_text == "Fredericksburg, Virginia, USA"
+    assert job.apply_url == "https://account.amazon.jobs/jobs/1001/apply"
+    assert "AWS infrastructure" in job.description_html
+    assert "Bachelor's degree" in job.description_html
+    assert job.department == "Operations, IT, & Support Engineering"
+
+
+@respx.mock
+def test_amazon_falls_back_to_job_path_when_no_apply_url():
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    posting = amazon_posting(1)
+    del posting["url_next_step"]
+    respx.get(AMAZON_SEARCH_URL).mock(return_value=httpx.Response(200, json={"jobs": [posting]}))
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert jobs[0].apply_url == "https://www.amazon.jobs/en/jobs/1001/data-center-engineer"
+
+
+@respx.mock
+def test_amazon_stops_when_page_smaller_than_page_size():
+    """A page shorter than PAGE_SIZE means we've reached the end -- the
+    collector shouldn't request another page after that."""
+    import src.collectors.amazon as amazon_module
+
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    route = respx.get(AMAZON_SEARCH_URL)
+    route.mock(return_value=httpx.Response(200, json={"jobs": [amazon_posting(1), amazon_posting(2)]}))
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert len(jobs) == 2
+    assert route.call_count == 1
+    assert amazon_module.PAGE_SIZE > 2  # sanity check the test fixture is actually shorter than a full page
+
+
+@respx.mock
+def test_amazon_pagination_continues_on_full_pages(monkeypatch):
+    import src.collectors.amazon as amazon_module
+
+    monkeypatch.setattr(amazon_module, "PAGE_SIZE", 2)
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    route = respx.get(AMAZON_SEARCH_URL)
+    route.side_effect = [
+        httpx.Response(200, json={"jobs": [amazon_posting(1), amazon_posting(2)]}),
+        httpx.Response(200, json={"jobs": [amazon_posting(3)]}),
+    ]
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert len(jobs) == 3
+    assert route.call_count == 2
+
+
+@respx.mock
+def test_amazon_respects_max_pages_cap(monkeypatch):
+    import src.collectors.amazon as amazon_module
+
+    monkeypatch.setattr(amazon_module, "PAGE_SIZE", 1)
+    monkeypatch.setattr(amazon_module, "MAX_PAGES", 3)
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    route = respx.get(AMAZON_SEARCH_URL)
+    route.mock(return_value=httpx.Response(200, json={"jobs": [amazon_posting(1)]}))  # always a "full" page
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert route.call_count == 3
+    assert len(jobs) == 3
+
+
+@respx.mock
+def test_amazon_skips_malformed_postings():
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    respx.get(AMAZON_SEARCH_URL).mock(
+        return_value=httpx.Response(200, json={"jobs": [{"no_id_or_title": True}, amazon_posting(1)]})
+    )
+    collector = make_collector(AmazonCollector)
+    jobs = collector.fetch_jobs(company)
+    assert len(jobs) == 1
+
+
+@respx.mock
+def test_amazon_unexpected_shape_raises():
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    respx.get(AMAZON_SEARCH_URL).mock(return_value=httpx.Response(200, json={"unexpected": "shape"}))
+    collector = make_collector(AmazonCollector)
+    with pytest.raises(CollectorError):
+        collector.fetch_jobs(company)
+
+
+@respx.mock
+def test_amazon_500_raises_collector_error():
+    company = CompanySource(name="Amazon", ats_type="amazon")
+    respx.get(AMAZON_SEARCH_URL).mock(return_value=httpx.Response(500))
+    collector = make_collector(AmazonCollector)
+    with pytest.raises(CollectorError):
+        collector.fetch_jobs(company)
+
+
 # ---------- Collector registry ----------
 
 def test_get_collector_class_unknown_ats_type_raises():
@@ -601,7 +730,10 @@ def test_load_companies_from_yaml():
     companies = load_companies()
     assert len(companies) > 100
     assert all(c.active for c in companies)
-    assert all(c.ats_type in ("greenhouse", "lever", "ashby", "workday", "government", "custom") for c in companies)
+    assert all(
+        c.ats_type in ("greenhouse", "lever", "ashby", "workday", "government", "custom", "amazon")
+        for c in companies
+    )
     names = {c.name for c in companies}
     assert "Cloudflare" in names
     assert "Anthropic" in names

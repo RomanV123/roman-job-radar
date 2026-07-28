@@ -3,7 +3,7 @@
 # Schema for each entry:
 #   - name: Display name
 #     industry: free-text category (biotech, cybersecurity, ot, energy, semiconductor, technology, government, ...)
-#     ats_type: greenhouse | lever | ashby | workday | government | custom
+#     ats_type: greenhouse | lever | ashby | workday | government | custom | amazon
 #     board_identifier: the token used in the ATS's public API URL
 #       (for workday, this is the tenant — see custom_config below)
 #     careers_url: official careers page (used for government/custom sources)
@@ -3880,5 +3880,32 @@ companies:
     ats_type: greenhouse
     board_identifier: project44
     careers_url: null
+    priority: 2
+    active: true
+
+# Mag 7 (2026-07-27): live-verified additions. NVIDIA is confirmed on
+# Workday (tenant "nvidia", wd5, site NVIDIAExternalCareerSite). Amazon has
+# its own unauthenticated JSON search API (see src/collectors/amazon.py) --
+# not a supported third-party ATS, so it gets a small dedicated collector,
+# the same way Workday did. Apple, Google/Alphabet, Meta, Microsoft, and
+# Tesla all run fully custom, JS-rendered career sites with no public JSON
+# endpoint found yet -- adding them would need headless-browser rendering,
+# which this project doesn't have infrastructure for today. Flagged as a
+# follow-up, not skipped by oversight.
+  - name: "NVIDIA"
+    industry: semiconductor
+    ats_type: workday
+    board_identifier: nvidia
+    careers_url: null
+    priority: 1
+    active: true
+    custom_config:
+      wd_host: wd5
+      site: NVIDIAExternalCareerSite
+  - name: "Amazon"
+    industry: technology
+    ats_type: amazon
+    board_identifier: null
+    careers_url: "https://www.amazon.jobs"
     priority: 2
     active: true

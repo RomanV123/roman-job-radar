@@ -51,7 +51,7 @@ class CompanySource:
     """A company entry loaded from config/companies.yaml."""
 
     name: str
-    ats_type: str  # greenhouse | lever | ashby | government | custom
+    ats_type: str  # greenhouse | lever | ashby | government | custom | workday | amazon
     industry: str | None = None
     board_identifier: str | None = None
     careers_url: str | None = None

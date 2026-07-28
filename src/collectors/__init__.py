@@ -1,3 +1,4 @@
+from src.collectors.amazon import AmazonCollector
 from src.collectors.ashby import AshbyCollector
 from src.collectors.base import BaseCollector, CollectionResult, CollectorError, CompanySource, RawJob, load_companies
 from src.collectors.custom_page import CustomPageCollector
@@ -13,6 +14,7 @@ COLLECTOR_REGISTRY: dict[str, type[BaseCollector]] = {
     "government": GovernmentCollector,
     "custom": CustomPageCollector,
     "workday": WorkdayCollector,
+    "amazon": AmazonCollector,
 }
 
 
@@ -36,6 +38,7 @@ __all__ = [
     "GovernmentCollector",
     "CustomPageCollector",
     "WorkdayCollector",
+    "AmazonCollector",
     "COLLECTOR_REGISTRY",
     "get_collector_class",
 ]
