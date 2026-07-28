@@ -26,6 +26,15 @@ def isolated_test_database(tmp_path, monkeypatch):
     get_settings.cache_clear()
 
 
+@pytest.fixture(autouse=True)
+def no_real_job_board_export(monkeypatch):
+    """The pipeline calls out to a real git repo on disk (see
+    src/services/job_board_export.py) after every full run -- tests must
+    never perform that real filesystem/git side effect, so replace it with a
+    no-op everywhere in this file."""
+    monkeypatch.setattr(pipeline_module, "export_job_board", lambda output_dir: None)
+
+
 @pytest.fixture
 def one_company(monkeypatch):
     company = CompanySource(name="Acme", ats_type="greenhouse", board_identifier="acme", industry="cybersecurity")

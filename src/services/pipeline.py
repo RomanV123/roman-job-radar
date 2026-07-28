@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from pathlib import Path
 
 import yaml
 from sqlalchemy import select
@@ -27,12 +28,14 @@ from src.processing.eligibility import evaluate_eligibility
 from src.processing.expire_jobs import expire_missing_jobs, expire_stale_jobs
 from src.processing.normalize import load_title_aliases, normalize_job
 from src.resume.profile_builder import build_alias_lookup, load_profile, load_skill_dictionary
+from src.services.job_board_export import run_export as export_job_board
 from src.settings import get_settings
 
 logger = get_logger(__name__)
 
 DOMAIN_SETTINGS_PATH = "config/settings.yaml"
 REPEATED_FAILURE_THRESHOLD = 3  # consecutive zero-progress runs before alerting
+JOB_BOARD_EXPORT_DIR = Path("../roman-job-radar-board")
 
 
 @dataclass
@@ -321,5 +324,16 @@ def run_pipeline(
             )
             if provider.send(failure_notification):
                 stats.repeated_failure_alert_sent = True
+
+    # Only a full, real run (no --company/--source narrowing, not a
+    # --dry-run) has scraped the whole board -- exporting a partial run
+    # would make the public job board look like coverage regressed.
+    is_full_run = not company_names and not source_filter and not dry_run
+    if is_full_run:
+        try:
+            export_job_board(JOB_BOARD_EXPORT_DIR)
+        except Exception as exc:  # noqa: BLE001 - export failure must never fail the pipeline
+            logger.warning("Job board export failed: %s", exc)
+            stats.errors.append(f"job_board_export: {exc}")
 
     return stats
