@@ -204,90 +204,118 @@ def run_pipeline(
         session.add(run)
         session.flush()
 
+        # A job_id should only ever get one JobMatch per run (evaluated_at is
+        # pinned to this run's single reference_time) -- this can otherwise
+        # be violated if two distinct entries in dedup_result.all_kept both
+        # resolve to the same existing DB row via find_existing_job (seen in
+        # practice from a transient duplicate in a live ATS response that
+        # slipped past in-run dedup). Guarding here, rather than only
+        # relying on dedup to prevent it upstream, stops that from ever
+        # reaching a second INSERT attempt.
+        scored_job_ids: set[int] = set()
+
         for entry in dedup_result.all_kept:
             company_source = company_lookup[entry.company_name]
-            company = get_or_create_company(session, company_source)
             normalized = entry.job
+            try:
+                # A SAVEPOINT per entry so one bad record (e.g. an
+                # unexpected IntegrityError) only loses that one job's
+                # work, not the entire run's -- a real multi-hour run was
+                # previously lost in full to a single duplicate-key
+                # collision because everything shared one transaction.
+                with session.begin_nested():
+                    company = get_or_create_company(session, company_source)
 
-            existing = find_existing_job(session, company.id, normalized)
-            if existing:
-                _apply_job_fields(existing, normalized)
-                existing.last_seen_at = reference_time
-                existing.is_active = True
-                job_row = existing
-                is_new_job = False
-                stats.updated_jobs += 1
-            else:
-                job_row = Job(
-                    external_id=normalized.external_id,
-                    source=normalized.source,
-                    company_id=company.id,
-                    first_seen_at=reference_time,
-                    last_seen_at=reference_time,
-                    is_active=True,
-                )
-                _apply_job_fields(job_row, normalized)
-                session.add(job_row)
-                session.flush()
-                is_new_job = True
-                stats.new_jobs += 1
+                    existing = find_existing_job(session, company.id, normalized)
+                    if existing:
+                        _apply_job_fields(existing, normalized)
+                        existing.last_seen_at = reference_time
+                        existing.is_active = True
+                        job_row = existing
+                        is_new_job = False
+                        stats.updated_jobs += 1
+                    else:
+                        job_row = Job(
+                            external_id=normalized.external_id,
+                            source=normalized.source,
+                            company_id=company.id,
+                            first_seen_at=reference_time,
+                            last_seen_at=reference_time,
+                            is_active=True,
+                        )
+                        _apply_job_fields(job_row, normalized)
+                        session.add(job_row)
+                        session.flush()
+                        is_new_job = True
+                        stats.new_jobs += 1
 
-            eligibility_result = evaluate_eligibility(
-                normalized,
-                profile,
-                is_active=True,
-                max_required_experience_years=max_required_experience_years,
-                seniority_exclude_keywords=seniority_keywords,
-                manually_enabled_categories=manually_enabled,
-                lookback_days=lookback_days,
-                reference_time=reference_time,
-            )
-            if not eligibility_result.eligible:
-                continue
-            stats.eligible_jobs += 1
+                    if job_row.id in scored_job_ids:
+                        continue
 
-            breakdown = score_job(
-                normalized,
-                profile,
-                alias_lookup,
-                skill_combinations=skill_combinations,
-                target_titles=target_titles,
-                lookback_days=lookback_days,
-                reference_time=reference_time,
-            )
-            presentation = build_match_presentation(breakdown, profile, eligibility_result, company_source.name)
-
-            match_row = JobMatch(
-                job_id=job_row.id,
-                total_score=breakdown.total_score,
-                skills_score=breakdown.skills_score,
-                experience_score=breakdown.experience_score,
-                title_score=breakdown.title_score,
-                education_score=breakdown.education_score,
-                location_score=breakdown.location_score,
-                semantic_score=breakdown.semantic_score,
-                freshness_score=breakdown.freshness_score,
-                matching_skills=presentation.matching_skills_json,
-                missing_skills=presentation.missing_skills_json,
-                match_explanation=presentation.match_explanation,
-                evaluated_at=reference_time,
-            )
-            session.add(match_row)
-            stats.scored_jobs += 1
-
-            # Only jobs CREATED this run get alerted on — a job that already
-            # existed is an update (last_seen_at bump), not a new discovery,
-            # so this naturally prevents re-alerting across pipeline runs.
-            if is_new_job:
-                newly_scored_for_alerts.append(
-                    ScoredJobForAlert(
-                        score=breakdown.total_score,
-                        title=normalized.title,
-                        company=company_source.name,
-                        location=normalized.location,
-                        apply_url=normalized.apply_url,
-                        match_explanation=presentation.match_explanation,
+                    eligibility_result = evaluate_eligibility(
+                        normalized,
+                        profile,
+                        is_active=True,
+                        max_required_experience_years=max_required_experience_years,
+                        seniority_exclude_keywords=seniority_keywords,
+                        manually_enabled_categories=manually_enabled,
+                        lookback_days=lookback_days,
+                        reference_time=reference_time,
                     )
+                    if not eligibility_result.eligible:
+                        continue
+                    stats.eligible_jobs += 1
+
+                    breakdown = score_job(
+                        normalized,
+                        profile,
+                        alias_lookup,
+                        skill_combinations=skill_combinations,
+                        target_titles=target_titles,
+                        lookback_days=lookback_days,
+                        reference_time=reference_time,
+                    )
+                    presentation = build_match_presentation(breakdown, profile, eligibility_result, company_source.name)
+
+                    match_row = JobMatch(
+                        job_id=job_row.id,
+                        total_score=breakdown.total_score,
+                        skills_score=breakdown.skills_score,
+                        experience_score=breakdown.experience_score,
+                        title_score=breakdown.title_score,
+                        education_score=breakdown.education_score,
+                        location_score=breakdown.location_score,
+                        semantic_score=breakdown.semantic_score,
+                        freshness_score=breakdown.freshness_score,
+                        matching_skills=presentation.matching_skills_json,
+                        missing_skills=presentation.missing_skills_json,
+                        match_explanation=presentation.match_explanation,
+                        evaluated_at=reference_time,
+                    )
+                    session.add(match_row)
+                    session.flush()  # surface any IntegrityError here, inside this entry's own try/except
+                    scored_job_ids.add(job_row.id)
+                    stats.scored_jobs += 1
+
+                    # Only jobs CREATED this run get alerted on — a job that
+                    # already existed is an update (last_seen_at bump), not
+                    # a new discovery, so this naturally prevents
+                    # re-alerting across pipeline runs.
+                    if is_new_job:
+                        newly_scored_for_alerts.append(
+                            ScoredJobForAlert(
+                                score=breakdown.total_score,
+                                title=normalized.title,
+                                company=company_source.name,
+                                location=normalized.location,
+                                apply_url=normalized.apply_url,
+                                match_explanation=presentation.match_explanation,
+                            )
+                        )
+            except Exception as exc:  # noqa: BLE001 - per-entry isolation boundary, mirrors per-company collection isolation above
+                stats.errors.append(f"{company_source.name} job {normalized.external_id}: {exc}")
+                logger.warning(
+                    "Failed to persist/score job %s for %s: %s", normalized.external_id, company_source.name, exc
                 )
 
         for company_name, seen_ids in seen_external_ids_by_company.items():

@@ -196,6 +196,54 @@ def test_run_pipeline_ineligible_job_not_scored(one_company):
 
 
 @respx.mock
+def test_run_pipeline_survives_duplicate_job_match_collision(monkeypatch):
+    """Regression test: a real production run hit an IntegrityError when
+    two distinct dedup-surviving entries both resolved to the same existing
+    Job via find_existing_job, causing two JobMatch inserts for the same
+    (job_id, evaluated_at) pair -- which previously crashed and rolled back
+    the *entire* run's work, not just that one job."""
+    acme = CompanySource(name="Acme", ats_type="greenhouse", board_identifier="acme", industry="cybersecurity")
+    other = CompanySource(name="Other Co", ats_type="greenhouse", board_identifier="otherco", industry="cybersecurity")
+    monkeypatch.setattr(pipeline_module, "load_companies", lambda: [acme, other])
+
+    job_a = dict(GREENHOUSE_JOB, id=1, title="Cybersecurity Analyst A")
+    job_b = dict(GREENHOUSE_JOB, id=2, title="Cybersecurity Analyst B", absolute_url="https://acme.com/jobs/2")
+    respx.get("https://boards-api.greenhouse.io/v1/boards/acme/jobs?content=true").mock(
+        return_value=httpx.Response(200, json={"jobs": [job_a]})
+    )
+    respx.get("https://boards-api.greenhouse.io/v1/boards/otherco/jobs?content=true").mock(
+        return_value=httpx.Response(200, json={"jobs": [job_b]})
+    )
+
+    with get_session() as session:
+        shared_company = Company(name="Acme", ats_type="greenhouse", board_identifier="acme")
+        session.add(shared_company)
+        session.flush()
+        shared_job = Job(
+            external_id="shared", source="greenhouse", company_id=shared_company.id,
+            title="Pre-existing shared job", is_active=True,
+        )
+        session.add(shared_job)
+        session.commit()
+        shared_job_id = shared_job.id
+
+    # Force both distinct entries to resolve to the SAME existing row, the
+    # way two genuinely different dedup-surviving postings did in production.
+    monkeypatch.setattr(
+        pipeline_module, "find_existing_job",
+        lambda session, company_id, normalized: session.get(Job, shared_job_id),
+    )
+
+    stats = pipeline_module.run_pipeline()
+
+    assert stats.companies_processed == 2
+    assert not stats.errors  # the collision is handled, not surfaced as a failure
+    with get_session() as session:
+        matches = session.query(JobMatch).filter_by(job_id=shared_job_id).all()
+        assert len(matches) == 1  # only one JobMatch, not two
+
+
+@respx.mock
 def test_run_pipeline_never_alerts_twice_for_same_job(one_company, monkeypatch):
     """Alert deduplication: a job discovered in run 1 must not trigger a
     second alert in run 2 just because the pipeline re-scores it (e.g. the
