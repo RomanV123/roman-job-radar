@@ -326,6 +326,18 @@ _ASHBY_EMPLOYMENT_MAP = {
 
 def extract_employment_type(raw_job: RawJob, source: str, description_text: str | None = None) -> str:
     raw = raw_job.raw
+    combined = f"{raw_job.title} {description_text or ''}".lower()
+
+    # An "intern"/"internship" title match is treated as authoritative,
+    # ahead of any source's structured employment-type field -- employers
+    # surprisingly often leave their own ATS's employment-type dropdown set
+    # to "Full-time" on a genuine internship posting (confirmed against
+    # real Ashby/Lever data: postings titled e.g. "Software Engineering
+    # Intern" whose structured field said "FullTime"/"Full-time"). Trusting
+    # the structured field there silently mislabeled real internships as
+    # full-time roles.
+    if re.search(r"\bintern(ship)?\b", combined):
+        return "internship"
 
     if source == "lever":
         commitment = (raw.get("categories") or {}).get("commitment")
@@ -341,9 +353,6 @@ def extract_employment_type(raw_job: RawJob, source: str, description_text: str 
             if mapped:
                 return mapped
 
-    combined = f"{raw_job.title} {description_text or ''}".lower()
-    if re.search(r"\bintern(ship)?\b", combined):
-        return "internship"
     if any(k in combined for k in ("contractor", "contract position", "temporary", " temp ")):
         return "contract"
     if "part-time" in combined or "part time" in combined:

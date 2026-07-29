@@ -245,6 +245,19 @@ def test_employment_type_defaults_full_time():
     assert extract_employment_type(job, "custom") == "full_time"
 
 
+def test_employment_type_intern_title_overrides_mislabeled_ashby_field():
+    """Regression test: real Ashby postings have been observed with a
+    title clearly saying "Intern" but employmentType incorrectly set to
+    "FullTime" by the employer -- the title must win."""
+    job = raw_job(title="Software Engineering Intern", raw={"employmentType": "FullTime"})
+    assert extract_employment_type(job, "ashby") == "internship"
+
+
+def test_employment_type_intern_title_overrides_mislabeled_lever_field():
+    job = raw_job(title="Forward Deployed Engineer, Internship", raw={"categories": {"commitment": "Full-time"}})
+    assert extract_employment_type(job, "lever") == "internship"
+
+
 # ---------- Salary ----------
 
 def test_salary_ashby_structured_annual():
