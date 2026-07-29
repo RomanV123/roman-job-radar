@@ -335,7 +335,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 registers a task that runs `run_pipeline.py` every 3 hours. cron
-(Linux/Mac) and GitHub Actions are documented there too as alternatives.
+(Linux/Mac) is documented there too as an alternative.
 
 ## 12. Launching the dashboard
 

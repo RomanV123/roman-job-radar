@@ -1,6 +1,13 @@
 # Scheduling Roman Job Radar
 
-Three ways to run the pipeline automatically. Pick one — you don't need all three.
+Two ways to run the pipeline automatically. Pick one — you don't need both.
+
+(A third option, running on GitHub Actions, was tried and removed — GitHub's
+runners have no persistent disk between runs, so it could never accumulate
+real data or match what the dashboard shows, and it also required your
+private `config/profile.yaml` to exist in the repo checkout, which
+conflicts with that file being gitignored. Not worth the complexity for
+what it could offer.)
 
 ## Option 1: Windows Task Scheduler (recommended — runs on your own PC)
 
@@ -56,26 +63,6 @@ Add:
 
 Create the `logs/` directory first (`mkdir -p logs`) since cron won't create
 it for you, and the redirect will fail silently otherwise.
-
-## Option 3: GitHub Actions (alternative — runs even when your PC is off)
-
-See `.github/workflows/pipeline.yml`. It runs every 3 hours on GitHub's own
-infrastructure via a `schedule` trigger, plus a `workflow_dispatch` trigger
-for a manual "Run workflow" button in the Actions tab.
-
-**The catch:** GitHub Actions runners are ephemeral — there's no persistent
-disk between runs. The workflow uses `actions/cache` to carry
-`data/job_radar.db` between runs as a pragmatic workaround, but that's not
-true durable storage (cache entries can be evicted, especially if unused
-for a while). If you want to actually rely on this long-term, swap
-`DATABASE_URL` in `.env` to a free-tier hosted Postgres (Supabase or Neon
-both work) — the app already runs on any SQLAlchemy URL, so it's a
-one-line config change, not a code change.
-
-To use this option:
-1. Push this repo to GitHub (as a **private** repo — it contains your resume and profile).
-2. Add `PUSHOVER_USER_KEY` and `PUSHOVER_APP_TOKEN` as repository secrets (Settings → Secrets and variables → Actions) if you want phone alerts from here.
-3. The workflow runs automatically on schedule, or trigger it manually from the Actions tab.
 
 ## Repeated-failure alerting
 
