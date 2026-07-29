@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Iterator
 from urllib.parse import urlsplit, urlunsplit
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -38,13 +38,26 @@ def get_engine() -> Engine:
     global _engine
     if _engine is None:
         settings = get_settings()
-        if settings.database_url.startswith("sqlite"):
+        is_sqlite = settings.database_url.startswith("sqlite")
+        if is_sqlite:
             db_path = settings.database_url.split("///")[-1]
             Path(db_path).parent.mkdir(parents=True, exist_ok=True)
             connect_args = {"check_same_thread": False}
         else:
             connect_args = {}
         _engine = create_engine(settings.database_url, connect_args=connect_args)
+        if is_sqlite:
+            # WAL lets the Streamlit dashboard read the DB without blocking
+            # on (or being blocked by) the pipeline's writes, and cuts the
+            # fsync overhead of the pipeline's many small per-job
+            # transactions -- default SQLite journaling does a full fsync
+            # per commit, which adds up fast at the pipeline's scale.
+            @event.listens_for(_engine, "connect")
+            def _set_sqlite_pragmas(dbapi_connection, connection_record) -> None:  # noqa: ANN001 - SQLAlchemy event signature
+                cursor = dbapi_connection.cursor()
+                cursor.execute("PRAGMA journal_mode=WAL")
+                cursor.execute("PRAGMA synchronous=NORMAL")
+                cursor.close()
         logger.info("Database engine created for %s", _redact_credentials(settings.database_url))
     return _engine
 

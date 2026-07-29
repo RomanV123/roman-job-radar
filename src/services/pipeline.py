@@ -9,6 +9,7 @@ Streamlit dashboard needs real, persisted jobs to actually demonstrate.
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,6 +37,14 @@ logger = get_logger(__name__)
 DOMAIN_SETTINGS_PATH = "config/settings.yaml"
 REPEATED_FAILURE_THRESHOLD = 3  # consecutive zero-progress runs before alerting
 JOB_BOARD_EXPORT_DIR = Path("../roman-job-radar-board")
+
+# Collection is pure network I/O against ~500 independent hosts -- each
+# collector already rate-limits its own requests to a single company, so
+# running many companies concurrently doesn't hit any one target harder
+# than a sequential run would, it just stops us idly waiting on one
+# company's network round-trip before starting the next. This was the
+# single biggest contributor to a full run taking ~1.5 hours.
+MAX_COLLECTION_WORKERS = 20
 
 
 @dataclass
@@ -71,6 +80,20 @@ def check_repeated_failures(session, threshold: int = REPEATED_FAILURE_THRESHOLD
 def load_domain_settings(path: str = DOMAIN_SETTINGS_PATH) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _collect_one_company(company_source: CompanySource):
+    """Runs in a worker thread -- must never raise, so a crash in one
+    company's collector can't take down the whole pool. Each call gets its
+    own collector instance (and therefore its own httpx.Client), so there's
+    no shared state between threads to worry about."""
+    cls = get_collector_class(company_source.ats_type)
+    try:
+        with cls() as collector:
+            result = collector.safe_collect(company_source)
+        return company_source, result, None
+    except Exception as exc:  # noqa: BLE001 - per-company isolation boundary
+        return company_source, None, str(exc)
 
 
 def get_or_create_company(session, company_source: CompanySource) -> Company:
@@ -152,33 +175,35 @@ def run_pipeline(
 
     for company_source in companies:
         company_lookup[company_source.name] = company_source
-        cls = get_collector_class(company_source.ats_type)
-        try:
-            with cls() as collector:
-                result = collector.safe_collect(company_source)
-        except Exception as exc:  # noqa: BLE001 - per-company isolation boundary
-            stats.companies_failed += 1
-            stats.errors.append(f"{company_source.name}: {exc}")
-            logger.warning("Company %s raised during collection: %s", company_source.name, exc)
-            continue
 
-        if not result.ok:
-            stats.companies_failed += 1
-            stats.errors.append(f"{company_source.name}: {result.error}")
-            continue
+    with ThreadPoolExecutor(max_workers=MAX_COLLECTION_WORKERS) as executor:
+        futures = [executor.submit(_collect_one_company, c) for c in companies]
+        for future in as_completed(futures):
+            company_source, result, crash_error = future.result()
 
-        stats.companies_processed += 1
-        stats.jobs_found += len(result.jobs)
+            if crash_error is not None:
+                stats.companies_failed += 1
+                stats.errors.append(f"{company_source.name}: {crash_error}")
+                logger.warning("Company %s raised during collection: %s", company_source.name, crash_error)
+                continue
 
-        raw_jobs = result.jobs[:jobs_per_company_limit] if jobs_per_company_limit else result.jobs
-        if jobs_per_company_limit is None:
-            seen_external_ids_by_company[company_source.name] = {j.external_id for j in raw_jobs}
+            if not result.ok:
+                stats.companies_failed += 1
+                stats.errors.append(f"{company_source.name}: {result.error}")
+                continue
 
-        for raw_job in raw_jobs:
-            normalized = normalize_job(
-                raw_job, company_source.ats_type, company_source.name, title_aliases, reference_time
-            )
-            all_candidates.append(CompanyJob(company_name=company_source.name, company_id=None, job=normalized))
+            stats.companies_processed += 1
+            stats.jobs_found += len(result.jobs)
+
+            raw_jobs = result.jobs[:jobs_per_company_limit] if jobs_per_company_limit else result.jobs
+            if jobs_per_company_limit is None:
+                seen_external_ids_by_company[company_source.name] = {j.external_id for j in raw_jobs}
+
+            for raw_job in raw_jobs:
+                normalized = normalize_job(
+                    raw_job, company_source.ats_type, company_source.name, title_aliases, reference_time
+                )
+                all_candidates.append(CompanyJob(company_name=company_source.name, company_id=None, job=normalized))
 
     dedup_result = deduplicate_jobs(all_candidates)
 
