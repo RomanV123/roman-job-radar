@@ -56,7 +56,13 @@ $SettingsArgs = @{
     StartWhenAvailable  = $true
     DontStopOnIdleEnd   = $true
     WakeToRun           = $true
-    ExecutionTimeLimit  = (New-TimeSpan -Hours 1)
+    # A full run across the whole company registry has taken up to ~1.5
+    # hours at 500+ companies and will only grow as more are added -- the
+    # original 1-hour cap was silently killing every single scheduled run
+    # partway through (Task Scheduler reports this as "terminated by
+    # user," easy to mistake for something else). 6 hours leaves real
+    # headroom while still killing a genuinely hung run eventually.
+    ExecutionTimeLimit  = (New-TimeSpan -Hours 6)
 }
 $Settings = New-ScheduledTaskSettingsSet @SettingsArgs
 
